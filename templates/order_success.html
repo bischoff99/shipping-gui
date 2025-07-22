@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Success - Unified System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            margin-top: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #56ccf2 0%, #2f80ed 100%);
+            border-radius: 15px;
+            color: white;
+        }
+        .success-card {
+            background: #d1edff;
+            border: 2px solid #2f80ed;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .info-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid #4facfe;
+        }
+        .info-card h3 {
+            color: #2f80ed;
+            margin-bottom: 15px;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            color: white;
+            text-decoration: none;
+        }
+        .btn-secondary {
+            background: #6c757d;
+        }
+        .routing-info {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✅ Order Created Successfully!</h1>
+            <p>Your order has been processed and routed automatically</p>
+        </div>
+        
+        <div class="success-card">
+            <h2 style="color: #155724; text-align: center;">🎉 Order Confirmation</h2>
+            {% if order.get('easyship_shipment_id') %}
+                <p style="text-align: center; font-size: 18px; margin-top: 10px;">
+                    <strong>Easyship Shipment ID:</strong> {{ order.easyship_shipment_id }}
+                </p>
+            {% endif %}
+            {% if order.get('order', {}).get('number') %}
+                <p style="text-align: center; font-size: 18px; margin-top: 10px;">
+                    <strong>Veeqo Order Number:</strong> {{ order.order.number }}
+                </p>
+            {% endif %}
+        </div>
+        
+        <div class="routing-info">
+            <h3>🎯 Routing Decision</h3>
+            <p><strong>Platform:</strong> {{ routing.platform }}</p>
+            <p><strong>Carrier:</strong> {{ routing.carrier }}</p>
+            <p><strong>Confidence Score:</strong> {{ "%.1f"|format(routing.confidence) }}%</p>
+            {% if routing.warehouse_info.get('name') %}
+                <p><strong>Warehouse:</strong> {{ routing.warehouse_info.name }}</p>
+            {% endif %}
+        </div>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>👤 Customer Information</h3>
+                <p><strong>Name:</strong> {{ customer.name }}</p>
+                {% if customer.phone %}<p><strong>Phone:</strong> {{ customer.phone }}</p>{% endif %}
+                {% if customer.email %}<p><strong>Email:</strong> {{ customer.email }}</p>{% endif %}
+                <p><strong>Address:</strong> {{ customer.address_1 }}</p>
+                <p><strong>City:</strong> {{ customer.city }}, {{ customer.get('state', '') }} {{ customer.get('postal_code', '') }}</p>
+                <p><strong>Country:</strong> {{ customer.get('country', 'US') }}</p>
+            </div>
+            
+            <div class="info-card">
+                <h3>📦 Products Added</h3>
+                {% for product in products %}
+                    <div style="margin-bottom: 10px; padding: 10px; background: white; border-radius: 5px;">
+                        <p><strong>{{ product.get('title', 'Product') }}</strong></p>
+                        {% if product.get('sku_code') %}<p>SKU: {{ product.sku_code }}</p>{% endif %}
+                        <p>Price: ${{ product.get('price', '25.00') }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        {% if order.get('rates') %}
+        <div class="info-card" style="margin-bottom: 20px;">
+            <h3>🚚 Available Shipping Rates</h3>
+            {% for rate in order.rates[:5] %}
+                <div style="margin-bottom: 8px; padding: 8px; background: white; border-radius: 5px;">
+                    <strong>{{ rate.get('courier_name', 'Unknown') }}</strong> - {{ rate.get('service_name', 'Service') }}
+                    <span style="float: right;">${{ rate.get('total_charge', '0') }} {{ rate.get('currency', 'USD') }}</span>
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="/create_order" class="btn">📋 Create Another Order</a>
+            <a href="/dashboard" class="btn btn-secondary">📊 View Dashboard</a>
+            <a href="/" class="btn btn-secondary">🏠 Home</a>
+        </div>
+    </div>
+</body>
+</html>

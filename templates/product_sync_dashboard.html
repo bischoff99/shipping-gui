@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Sync Dashboard - Advanced Management</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #4facfe;
+            --success: #10d876;
+            --warning: #ffc107;
+            --danger: #f5576c;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-dark: rgba(0, 0, 0, 0.1);
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+
+        body { 
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .navbar .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(20px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--glass);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success) 0%, #28a745 100%);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning) 0%, #fd7e14 100%);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger) 0%, #dc3545 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .sync-controls {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .status-active { background: var(--success); }
+        .status-syncing { background: var(--warning); }
+        .status-error { background: var(--danger); }
+        .status-idle { background: #6c757d; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--success), var(--warning));
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .stat-card .number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .label {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-section, .alerts-section {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            color: white;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        .alert-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            border-left: 4px solid var(--warning);
+        }
+
+        .alert-item.critical {
+            border-left-color: var(--danger);
+        }
+
+        .products-table {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            color: white;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .data-table th {
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .sync-log {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            color: white;
+            margin-top: 2rem;
+        }
+
+        .log-entry {
+            padding: 0.5rem 1rem;
+            margin-bottom: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .log-entry.success { border-left: 3px solid var(--success); }
+        .log-entry.warning { border-left: 3px solid var(--warning); }
+        .log-entry.error { border-left: 3px solid var(--danger); }
+
+        .floating-sync {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+        }
+
+        .fab-sync {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, var(--success), var(--accent));
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(16, 216, 118, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .fab-sync:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 32px rgba(16, 216, 118, 0.6);
+        }
+
+        .fab-sync.syncing {
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sync-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1><i class="fas fa-sync-alt"></i> Product Sync Dashboard</h1>
+        <div class="nav-actions">
+            <button class="btn btn-success" onclick="startAutoSync()">
+                <i class="fas fa-play"></i> Auto Sync
+            </button>
+            <button class="btn btn-warning" onclick="stopAutoSync()">
+                <i class="fas fa-pause"></i> Stop Auto
+            </button>
+            <a href="/enhanced_dashboard" class="btn btn-secondary">
+                <i class="fas fa-tachometer-alt"></i> Main Dashboard
+            </a>
+            <a href="/" class="btn btn-secondary">
+                <i class="fas fa-home"></i> Home
+            </a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Sync Controls -->
+        <section class="sync-controls">
+            <div class="sync-status">
+                <div class="status-indicator status-idle" id="sync-status-indicator"></div>
+                <div>
+                    <h3 id="sync-status-text">Sync Status: Idle</h3>
+                    <p id="last-sync-time">
+                        {% if sync_stats.last_sync_time %}
+                            Last sync: {{ sync_stats.last_sync_time }}
+                        {% else %}
+                            Never synced
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            
+            <div class="sync-actions">
+                <button class="btn btn-primary" onclick="triggerManualSync()" id="manual-sync-btn">
+                    <i class="fas fa-sync-alt"></i> Manual Sync
+                </button>
+                <button class="btn btn-secondary" onclick="refreshData()">
+                    <i class="fas fa-refresh"></i> Refresh Data
+                </button>
+            </div>
+        </section>
+
+        <!-- Stats Grid -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-boxes icon"></i>
+                <div class="number" id="total-products">{{ sync_stats.total_products or 0 }}</div>
+                <div class="label">Total Products</div>
+            </div>
+            
+            <div class="stat-card">
+                <i class="fas fa-check-circle icon"></i>
+                <div class="number" id="synced-products">{{ sync_stats.synced_products or 0 }}</div>
+                <div class="label">Synced Products</div>
+            </div>
+            
+            <div class="stat-card">
+                <i class="fas fa-exclamation-triangle icon"></i>
+                <div class="number" id="pending-products">{{ sync_stats.pending_products or 0 }}</div>
+                <div class="label">Pending Sync</div>
+            </div>
+            
+            <div class="stat-card">
+                <i class="fas fa-times-circle icon"></i>
+                <div class="number" id="error-products">{{ sync_stats.error_products or 0 }}</div>
+                <div class="label">Sync Errors</div>
+            </div>
+        </section>
+
+        <!-- Dashboard Grid -->
+        <section class="dashboard-grid">
+            <div class="chart-section">
+                <h3><i class="fas fa-chart-pie"></i> Product Distribution</h3>
+                <div class="chart-container">
+                    <canvas id="distributionChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="alerts-section">
+                <h3><i class="fas fa-bell"></i> Inventory Alerts</h3>
+                <div id="alerts-list">
+                    {% if inventory_alerts %}
+                        {% for alert in inventory_alerts %}
+                            <div class="alert-item {{ 'critical' if alert.severity == 'critical' else '' }}">
+                                <div>
+                                    <strong>{{ alert.name }}</strong>
+                                    <div>SKU: {{ alert.sku }}</div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 1.5rem; font-weight: bold;">{{ alert.total_inventory }}</div>
+                                    <div style="font-size: 0.8rem;">{{ alert.severity.upper() }}</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert-item">
+                            <div>No inventory alerts</div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
+        <!-- Performance Table -->
+        <section class="products-table">
+            <div class="table-header">
+                <h3><i class="fas fa-chart-line"></i> Top Products by Value</h3>
+                <div>
+                    <button class="btn btn-primary" onclick="exportProducts()">
+                        <i class="fas fa-download"></i> Export
+                    </button>
+                </div>
+            </div>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>SKU</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total Value</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="products-tbody">
+                    {% if performance.top_products_by_value %}
+                        {% for product in performance.top_products_by_value %}
+                            <tr>
+                                <td>{{ product.sku }}</td>
+                                <td>{{ product.name[:30] }}{% if product.name|length > 30 %}...{% endif %}</td>
+                                <td>${{ "%.2f"|format(product.price) }}</td>
+                                <td>{{ product.quantity }}</td>
+                                <td>${{ "%.2f"|format(product.total_value) }}</td>
+                                <td><span class="status-synced">Synced</span></td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6" style="text-align: center;">No product data available</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Sync Log -->
+        <section class="sync-log">
+            <h3><i class="fas fa-list"></i> Sync Activity Log</h3>
+            <div id="sync-log-entries">
+                <div class="log-entry success">
+                    <span class="timestamp">{{ sync_stats.last_sync_time or 'Never' }}</span> - 
+                    Product sync completed successfully
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Floating Sync Button -->
+    <div class="floating-sync">
+        <button class="fab-sync" onclick="triggerManualSync()" id="fab-sync-btn" title="Manual Sync">
+            <i class="fas fa-sync-alt"></i>
+        </button>
+    </div>
+
+    <script>
+        // Initialize charts
+        const ctx = document.getElementById('distributionChart').getContext('2d');
+        const distributionChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: {{ performance.categories.keys()|list|tojson if performance.categories else "[]"|safe }},
+                datasets: [{
+                    data: {{ performance.categories.values()|list|tojson if performance.categories else "[]"|safe }},
+                    backgroundColor: [
+                        'rgba(79, 172, 254, 0.8)',
+                        'rgba(16, 216, 118, 0.8)',
+                        'rgba(255, 193, 7, 0.8)',
+                        'rgba(245, 87, 108, 0.8)',
+                        'rgba(118, 75, 162, 0.8)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: 'rgba(255, 255, 255, 0.8)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Sync functionality
+        let syncInProgress = false;
+
+        async function triggerManualSync() {
+            if (syncInProgress) return;
+            
+            syncInProgress = true;
+            updateSyncStatus('syncing', 'Syncing products...');
+            
+            const manualBtn = document.getElementById('manual-sync-btn');
+            const fabBtn = document.getElementById('fab-sync-btn');
+            
+            manualBtn.disabled = true;
+            manualBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing...';
+            fabBtn.classList.add('syncing');
+            
+            try {
+                const response = await fetch('/api/sync_products', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    updateSyncStatus('active', 'Sync completed successfully');
+                    addLogEntry('success', 'Manual sync completed successfully');
+                    refreshData();
+                } else {
+                    updateSyncStatus('error', 'Sync failed: ' + result.message);
+                    addLogEntry('error', 'Sync failed: ' + result.message);
+                }
+                
+            } catch (error) {
+                updateSyncStatus('error', 'Sync failed: ' + error.message);
+                addLogEntry('error', 'Sync failed: ' + error.message);
+            }
+            
+            finally {
+                syncInProgress = false;
+                manualBtn.disabled = false;
+                manualBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Manual Sync';
+                fabBtn.classList.remove('syncing');
+                
+                setTimeout(() => {
+                    updateSyncStatus('idle', 'Sync Status: Idle');
+                }, 3000);
+            }
+        }
+
+        async function startAutoSync() {
+            try {
+                const response = await fetch('/api/start_auto_sync', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ interval: 5 })
+                });
+                
+                const result = await response.json();
+                addLogEntry('success', result.message);
+                
+            } catch (error) {
+                addLogEntry('error', 'Failed to start auto-sync: ' + error.message);
+            }
+        }
+
+        async function stopAutoSync() {
+            try {
+                const response = await fetch('/api/stop_auto_sync', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const result = await response.json();
+                addLogEntry('warning', result.message);
+                
+            } catch (error) {
+                addLogEntry('error', 'Failed to stop auto-sync: ' + error.message);
+            }
+        }
+
+        async function refreshData() {
+            try {
+                const response = await fetch('/api/product_stats');
+                const data = await response.json();
+                
+                if (data.status !== 'error') {
+                    // Update stats
+                    document.getElementById('total-products').textContent = data.stats.total_products || 0;
+                    document.getElementById('synced-products').textContent = data.stats.synced_products || 0;
+                    document.getElementById('pending-products').textContent = data.stats.pending_products || 0;
+                    document.getElementById('error-products').textContent = data.stats.error_products || 0;
+                    
+                    // Update last sync time
+                    if (data.stats.last_sync_time) {
+                        document.getElementById('last-sync-time').textContent = 'Last sync: ' + data.stats.last_sync_time;
+                    }
+                }
+                
+            } catch (error) {
+                console.error('Failed to refresh data:', error);
+            }
+        }
+
+        function updateSyncStatus(status, message) {
+            const indicator = document.getElementById('sync-status-indicator');
+            const text = document.getElementById('sync-status-text');
+            
+            indicator.className = 'status-indicator status-' + status;
+            text.textContent = message;
+        }
+
+        function addLogEntry(type, message) {
+            const logContainer = document.getElementById('sync-log-entries');
+            const timestamp = new Date().toLocaleString();
+            
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry ' + type;
+            logEntry.innerHTML = `<span class="timestamp">${timestamp}</span> - ${message}`;
+            
+            logContainer.insertBefore(logEntry, logContainer.firstChild);
+            
+            // Keep only last 20 entries
+            while (logContainer.children.length > 20) {
+                logContainer.removeChild(logContainer.lastChild);
+            }
+        }
+
+        function exportProducts() {
+            // This would export product data as CSV
+            alert('Export functionality would download product data as CSV');
+        }
+
+        // Auto-refresh every 30 seconds
+        setInterval(refreshData, 30000);
+        
+        // Initial data load
+        refreshData();
+    </script>
+</body>
+</html>

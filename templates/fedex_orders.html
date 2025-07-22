@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FedEx Orders - Unified Order System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .summary-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .summary-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+        }
+        
+        .summary-card .count {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .actions {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        
+        .btn-info {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .customers-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .customers-table th,
+        .customers-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .customers-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .customers-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .country-flag {
+            margin-right: 8px;
+        }
+        
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        
+        .alert-error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            color: #667eea;
+        }
+        
+        .nav-links {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .nav-links a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+        }
+        
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'error' if category == 'error' else 'success' }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('create_order') }}">Create Order</a>
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('fedex_orders') }}">FedEx Orders</a>
+        </div>
+        
+        <div class="header">
+            <h1>🚛 FedEx Orders Management</h1>
+            <p>Manage and process predefined FedEx customer orders</p>
+        </div>
+        
+        <!-- Summary Cards -->
+        <div class="summary">
+            <div class="summary-card">
+                <h3>Total Customers</h3>
+                <div class="count">{{ customers|length }}</div>
+            </div>
+            {% for country, customer_list in summary.items() %}
+            <div class="summary-card">
+                <h3>
+                    {% if country == 'GB' %}🇬🇧 United Kingdom
+                    {% elif country == 'DE' %}🇩🇪 Germany  
+                    {% elif country == 'PH' %}🇵🇭 Philippines
+                    {% else %}{{ country }}
+                    {% endif %}
+                </h3>
+                <div class="count">{{ customer_list|length }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Actions -->
+        <div class="actions">
+            <button class="btn btn-success" onclick="processAllOrders()">
+                Process All FedEx Orders
+            </button>
+            <a href="{{ url_for('sync_data') }}" class="btn btn-info">
+                Sync Data
+            </a>
+        </div>
+        
+        <div class="loading" id="loading">
+            <p>Processing orders... Please wait.</p>
+        </div>
+        
+        <!-- Customers Table -->
+        <h2>FedEx Customers</h2>
+        <table class="customers-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Country</th>
+                    <th>City</th>
+                    <th>Address</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                <tr>
+                    <td><strong>{{ customer.name }}</strong></td>
+                    <td>{{ customer.email }}</td>
+                    <td>{{ customer.phone }}</td>
+                    <td>
+                        {% if customer.country == 'GB' %}🇬🇧 UK
+                        {% elif customer.country == 'DE' %}🇩🇪 Germany
+                        {% elif customer.country == 'PH' %}🇵🇭 Philippines
+                        {% else %}{{ customer.country }}
+                        {% endif %}
+                    </td>
+                    <td>{{ customer.city }}</td>
+                    <td>{{ customer.address_1 }}</td>
+                    <td>
+                        <button class="btn" style="font-size: 12px; padding: 8px 15px;" 
+                                onclick="processSingleOrder('{{ customer.name }}')">
+                            Create Order
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function processAllOrders() {
+            document.getElementById('loading').style.display = 'block';
+            
+            fetch('/process_fedex_orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loading').style.display = 'none';
+                
+                if (data.status === 'success') {
+                    alert(`Successfully processed ${data.successful}/${data.processed} FedEx orders!`);
+                    location.reload();
+                } else {
+                    alert('Error processing orders: ' + data.message);
+                }
+            })
+            .catch(error => {
+                document.getElementById('loading').style.display = 'none';
+                alert('Error: ' + error);
+            });
+        }
+        
+        function processSingleOrder(customerName) {
+            fetch(`/create_fedex_order/${encodeURIComponent(customerName)}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(`FedEx order created successfully for ${customerName}!`);
+                } else {
+                    alert('Error creating order: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('Error: ' + error);
+            });
+        }
+    </script>
+</body>
+</html>

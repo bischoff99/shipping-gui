@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Order - Unified System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            margin-top: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 15px;
+            color: white;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        textarea, select, input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        textarea:focus, select:focus, input:focus {
+            outline: none;
+            border-color: #4facfe;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .back-btn {
+            background: #6c757d;
+            margin-right: 10px;
+        }
+        .flash-message {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .flash-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .flash-success {
+            background: #d1edff;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .flash-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .help-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .paste-helper {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px dashed #dee2e6;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .paste-helper:hover {
+            border-color: #4facfe;
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+        }
+        .paste-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: transform 0.3s;
+        }
+        .paste-btn:hover {
+            transform: translateY(-2px);
+        }
+        .format-example {
+            background: #f8f9fa;
+            border-left: 4px solid #4facfe;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 0 8px 8px 0;
+            font-family: monospace;
+            font-size: 13px;
+        }
+        .auto-detect {
+            background: #d4edda;
+            color: #155724;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Create New Order</h1>
+            <p>Paste customer details and create orders with automatic routing</p>
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Enhanced Paste Helper -->
+        <div class="paste-helper">
+            <h3>🔄 Smart Paste Assistant</h3>
+            <p>Quick paste common formats or use manual entry below</p>
+            <div>
+                <button type="button" class="paste-btn" onclick="pasteExample('tabbed')">📋 Paste Tab Format</button>
+                <button type="button" class="paste-btn" onclick="pasteExample('csv')">📊 Paste CSV Format</button>
+                <button type="button" class="paste-btn" onclick="pasteExample('address')">🏠 Paste Address Block</button>
+                <button type="button" class="paste-btn" onclick="clearInput()">🗑️ Clear</button>
+            </div>
+            <div id="auto-detect-result" class="auto-detect" style="display: none;"></div>
+        </div>
+
+        <form method="POST">
+            <div class="form-group">
+                <label for="customer_input">Customer Details</label>
+                <textarea 
+                    id="customer_input" 
+                    name="customer_input" 
+                    rows="8" 
+                    placeholder="Paste or type customer data here. Auto-detection will help parse your input..."
+                    required
+                    onpaste="handlePaste(event)"
+                    oninput="detectFormat()"
+                ></textarea>
+                <div class="help-text">
+                    Supports multiple formats: Tab-separated, CSV, Address blocks, Space-separated
+                </div>
+                
+                <!-- Format Examples -->
+                <div class="format-example">
+                    <strong>📊 Tab-separated:</strong><br>
+                    John Doe&nbsp;&nbsp;&nbsp;&nbsp;+1234567890&nbsp;&nbsp;&nbsp;&nbsp;john@email.com&nbsp;&nbsp;&nbsp;&nbsp;123 Main St&nbsp;&nbsp;&nbsp;&nbsp;Boston&nbsp;&nbsp;&nbsp;&nbsp;MA&nbsp;&nbsp;&nbsp;&nbsp;02101&nbsp;&nbsp;&nbsp;&nbsp;US
+                </div>
+                
+                <div class="format-example">
+                    <strong>🏠 Address Block:</strong><br>
+                    John Doe<br>
+                    +1 (234) 567-8900<br>
+                    john.doe@email.com<br>
+                    123 Main Street<br>
+                    Boston, MA 02101<br>
+                    United States
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="carrier">Preferred Carrier (Optional)</label>
+                <select id="carrier" name="carrier">
+                    <option value="">Auto-select based on routing logic</option>
+                    {% for carrier in carriers %}
+                        <option value="{{ carrier }}">{{ carrier }}</option>
+                    {% endfor %}
+                </select>
+                <div class="help-text">FedEx → Easyship | UPS/DHL/USPS → Veeqo</div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="/" class="btn back-btn">← Back to Dashboard</a>
+                <button type="submit" class="btn">🚀 Create Order</button>
+            </div>
+        </form>
+        
+        <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+            <h3>🎯 How it works:</h3>
+            <ul style="margin-top: 10px; padding-left: 20px;">
+                <li>Paste customer details in the text area</li>
+                <li>System automatically parses and validates input</li>
+                <li>Routes to best carrier and platform based on location</li>
+                <li>Matches warehouses (Nevada/California preference)</li>
+                <li>Adds 3 random products to the order</li>
+                <li>Creates actual order via API</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Sample data for quick paste examples
+        const sampleData = {
+            tabbed: "John Doe\t+1234567890\tjohn@email.com\t123 Main Street\tBoston\tMA\t02101\tUnited States",
+            csv: "Jane Smith,+1987654321,jane.smith@email.com,456 Oak Avenue,Los Angeles,CA,90210,USA",
+            address: "Mike Johnson\n+1 (555) 123-4567\nmike.johnson@email.com\n789 Pine Street\nNew York, NY 10001\nUnited States"
+        };
+
+        function pasteExample(format) {
+            const textarea = document.getElementById('customer_input');
+            textarea.value = sampleData[format];
+            textarea.focus();
+            detectFormat();
+        }
+
+        function clearInput() {
+            const textarea = document.getElementById('customer_input');
+            textarea.value = '';
+            textarea.focus();
+            hideAutoDetect();
+        }
+
+        function handlePaste(event) {
+            // Small delay to let paste complete before detecting
+            setTimeout(() => {
+                detectFormat();
+            }, 10);
+        }
+
+        function detectFormat() {
+            const textarea = document.getElementById('customer_input');
+            const content = textarea.value.trim();
+            const resultDiv = document.getElementById('auto-detect-result');
+            
+            if (!content) {
+                hideAutoDetect();
+                return;
+            }
+
+            let detectedFormat = 'Unknown';
+            let confidence = 'Low';
+            
+            // Detect tab-separated
+            if (content.includes('\t')) {
+                detectedFormat = 'Tab-separated';
+                confidence = 'High';
+            }
+            // Detect CSV (commas)
+            else if (content.includes(',') && content.split(',').length > 3) {
+                detectedFormat = 'CSV Format';
+                confidence = 'High';
+            }
+            // Detect address block (multiple lines)
+            else if (content.includes('\n') && content.split('\n').length >= 3) {
+                detectedFormat = 'Address Block';
+                confidence = 'Medium';
+            }
+            // Detect space-separated
+            else if (content.includes(' ') && content.split(' ').length > 5) {
+                detectedFormat = 'Space-separated';
+                confidence = 'Medium';
+            }
+
+            // Show auto-detection result
+            if (detectedFormat !== 'Unknown') {
+                resultDiv.innerHTML = `✅ Auto-detected: ${detectedFormat} (${confidence} confidence)`;
+                resultDiv.style.display = 'inline-block';
+                
+                // Add parsing hints
+                if (detectedFormat === 'Tab-separated') {
+                    resultDiv.innerHTML += ' - Perfect! This format parses best.';
+                } else if (detectedFormat === 'CSV Format') {
+                    resultDiv.innerHTML += ' - Good format, will parse comma-separated values.';
+                } else if (detectedFormat === 'Address Block') {
+                    resultDiv.innerHTML += ' - Will extract info from address lines.';
+                }
+            } else {
+                resultDiv.innerHTML = '⚠️ Format unclear - try one of the example formats above';
+                resultDiv.style.display = 'inline-block';
+                resultDiv.style.background = '#fff3cd';
+                resultDiv.style.color = '#856404';
+            }
+        }
+
+        function hideAutoDetect() {
+            const resultDiv = document.getElementById('auto-detect-result');
+            resultDiv.style.display = 'none';
+        }
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            // Ctrl+1, Ctrl+2, Ctrl+3 for quick paste examples
+            if (event.ctrlKey) {
+                switch(event.key) {
+                    case '1':
+                        event.preventDefault();
+                        pasteExample('tabbed');
+                        break;
+                    case '2':
+                        event.preventDefault();
+                        pasteExample('csv');
+                        break;
+                    case '3':
+                        event.preventDefault();
+                        pasteExample('address');
+                        break;
+                    case '0':
+                        event.preventDefault();
+                        clearInput();
+                        break;
+                }
+            }
+        });
+
+        // Auto-focus on page load
+        window.addEventListener('load', function() {
+            document.getElementById('customer_input').focus();
+        });
+    </script>
+</body>
+</html>

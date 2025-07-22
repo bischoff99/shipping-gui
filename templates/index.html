@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unified Order & Warehouse Management System</title>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+        }
+        
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 15px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+        }
+        
+        .header h1 { 
+            font-size: 2.5em; 
+            margin-bottom: 10px; 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-weight: 700;
+        }
+        
+        .header p { 
+            font-size: 1.2em; 
+            opacity: 0.95;
+            font-weight: 300;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .feature-card {
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: inherit;
+            filter: blur(20px);
+            opacity: 0.8;
+            z-index: -1;
+        }
+        
+        .feature-card:hover { 
+            transform: translateY(-8px) scale(1.02); 
+            color: white; 
+            text-decoration: none;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+        
+        .card-blue { 
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%); 
+        }
+        
+        .card-green { 
+            background: linear-gradient(135deg, rgba(86, 204, 242, 0.9) 0%, rgba(47, 128, 237, 0.9) 100%); 
+        }
+        
+        .card-orange { 
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.9) 0%, rgba(245, 87, 108, 0.9) 100%); 
+        }
+        
+        .card-purple { 
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.9) 0%, rgba(0, 242, 254, 0.9) 100%); 
+        }
+        
+        .card-teal { 
+            background: linear-gradient(135deg, rgba(72, 198, 239, 0.9) 0%, rgba(111, 134, 214, 0.9) 100%); 
+        }
+        
+        .card-red { 
+            background: linear-gradient(135deg, rgba(255, 154, 158, 0.9) 0%, rgba(250, 208, 196, 0.9) 100%); 
+        }
+        
+        .feature-card h3 { 
+            font-size: 1.6em; 
+            margin-bottom: 15px; 
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .feature-card p { 
+            font-size: 1.1em; 
+            opacity: 0.95;
+            line-height: 1.5;
+            font-weight: 300;
+        }
+        
+        .footer-info {
+            text-align: center;
+            margin-top: 40px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            color: #555;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .footer-info p {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .footer-info strong {
+            color: #4facfe;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #4CAF50;
+            border-radius: 50%;
+            margin-right: 8px;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚛 Unified Order & Warehouse Management System</h1>
+            <p><span class="status-indicator"></span>Enterprise-grade solution for order creation, routing, and API synchronization</p>
+        </div>
+        
+        <div class="features">
+            <a href="/create_order" class="feature-card card-blue">
+                <h3>📋 Create Order</h3>
+                <p>Smart order creation with customer detail parsing, automatic routing, and intelligent product selection</p>
+            </a>
+            
+            <a href="/advanced_dashboard" class="feature-card card-green">
+                <h3>🚀 Advanced Dashboard</h3>
+                <p>Real-time analytics, interactive charts, warehouse mapping, and comprehensive performance monitoring</p>
+            </a>
+            
+            <a href="/product_sync_dashboard" class="feature-card card-purple">
+                <h3>🔄 Product Sync System</h3>
+                <p>Advanced bidirectional synchronization, inventory management, and real-time sync monitoring</p>
+            </a>
+            
+            <a href="/enhanced_dashboard" class="feature-card card-teal">
+                <h3>📊 Enhanced Dashboard</h3>
+                <p>Advanced analytics, real-time tracking, interactive maps, and comprehensive order management</p>
+            </a>
+            
+            <a href="/fedex_orders" class="feature-card card-orange">
+                <h3>🚛 FedEx Orders</h3>
+                <p>Manage and process predefined FedEx customer orders for UK, Germany, and Philippines markets</p>
+            </a>
+            
+            <a href="/veeqo_orders" class="feature-card card-red">
+                <h3>� Veeqo Orders</h3>
+                <p>UPS, DHL, and USPS orders routed through Veeqo based on regional preferences and optimization</p>
+            </a>
+        </div>
+        
+        <div class="footer-info">
+            <p><strong>🎯 Smart Routing Logic:</strong> FedEx orders → Easyship API | UPS, DHL, USPS → Veeqo API</p>
+            <p><strong>🔧 Features:</strong> Real-time sync | Inventory monitoring | Advanced analytics | Smart automation</p>
+            <p><strong>🌐 Integration:</strong> Veeqo.com ↔ Easyship.com | Multi-warehouse support | Global shipping</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veeqo Orders - Unified Order System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .summary-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .summary-section h3 {
+            margin: 0 0 15px 0;
+            color: #2c3e50;
+        }
+        
+        .summary-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .summary-card h4 {
+            margin: 0 0 8px 0;
+            font-size: 1em;
+        }
+        
+        .summary-card .count {
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        
+        .actions {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        
+        .btn-info {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .customers-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .customers-table th,
+        .customers-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .customers-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .customers-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .carrier-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .carrier-ups {
+            background: #8b4513;
+            color: white;
+        }
+        
+        .carrier-dhl {
+            background: #ffcc00;
+            color: #333;
+        }
+        
+        .state-badge {
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.75em;
+            font-weight: 500;
+        }
+        
+        .state-nevada {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        .state-california {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        
+        .state-florida {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+        
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        
+        .alert-error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            color: #667eea;
+        }
+        
+        .nav-links {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .nav-links a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+        }
+        
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .api-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        
+        .api-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'error' if category == 'error' else 'success' }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('create_order') }}">Create Order</a>
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('fedex_orders') }}">FedEx Orders</a>
+            <a href="{{ url_for('veeqo_orders') }}">Veeqo Orders</a>
+        </div>
+        
+        <div class="header">
+            <h1>📦 Veeqo Orders Management</h1>
+            <p>Manage UPS and DHL orders routed through Veeqo based on state preferences</p>
+        </div>
+        
+        <!-- Summary Grid -->
+        <div class="summary-grid">
+            <!-- By State Preference -->
+            <div class="summary-section">
+                <h3>🗺️ By State Preference</h3>
+                {% for state, customer_list in summary.by_state.items() %}
+                <div class="summary-card">
+                    <h4>{{ state }}</h4>
+                    <div class="count">{{ customer_list|length }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- By Carrier -->
+            <div class="summary-section">
+                <h3>🚛 By Carrier</h3>
+                {% for carrier, customer_list in summary.by_carrier.items() %}
+                <div class="summary-card">
+                    <h4>{{ carrier }}</h4>
+                    <div class="count">{{ customer_list|length }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- By Country -->
+            <div class="summary-section">
+                <h3>🌍 By Country</h3>
+                {% for country, customer_list in summary.by_country.items() %}
+                <div class="summary-card">
+                    <h4>
+                        {% if country == 'GB' %}🇬🇧 UK
+                        {% elif country == 'IE' %}🇮🇪 Ireland
+                        {% else %}{{ country }}
+                        {% endif %}
+                    </h4>
+                    <div class="count">{{ customer_list|length }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Total -->
+            <div class="summary-section">
+                <h3>📋 Total Orders</h3>
+                <div class="summary-card">
+                    <h4>All Customers</h4>
+                    <div class="count">{{ customers|length }}</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Actions -->
+        <div class="actions">
+            <button class="btn btn-success" onclick="processAllOrders()">
+                Process All Veeqo Orders
+            </button>
+            <button class="btn btn-info" onclick="fetchPurchaseOrders()">
+                View Purchase Orders
+            </button>
+            <a href="{{ url_for('sync_data') }}" class="btn btn-warning">
+                Sync Data
+            </a>
+        </div>
+        
+        <div class="loading" id="loading">
+            <p>Processing orders... Please wait.</p>
+        </div>
+        
+        <!-- Customers Table -->
+        <h2>Veeqo Customers</h2>
+        <table class="customers-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>State Preference</th>
+                    <th>Carrier</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Country</th>
+                    <th>City</th>
+                    <th>Address</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                <tr>
+                    <td><strong>{{ customer.name }}</strong></td>
+                    <td>
+                        <span class="state-badge state-{{ customer.state_preference|lower|replace(' ', '') }}">
+                            {{ customer.state_preference }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="carrier-badge carrier-{{ customer.carrier|lower }}">
+                            {{ customer.carrier }}
+                        </span>
+                    </td>
+                    <td>{{ customer.email }}</td>
+                    <td>{{ customer.phone }}</td>
+                    <td>
+                        {% if customer.country == 'GB' %}🇬🇧 UK
+                        {% elif customer.country == 'IE' %}🇮🇪 Ireland
+                        {% else %}{{ customer.country }}
+                        {% endif %}
+                    </td>
+                    <td>{{ customer.city }}</td>
+                    <td>{{ customer.address_1 }}</td>
+                    <td>
+                        <button class="btn" style="font-size: 12px; padding: 8px 15px;" 
+                                onclick="processSingleOrder('{{ customer.name }}')">
+                            Create Order
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <!-- API Section -->
+        <div class="api-section">
+            <h3>🔗 Veeqo API Integration</h3>
+            <p>This section integrates with the <strong>Veeqo Purchase Orders API</strong> as documented at:</p>
+            <p><a href="https://developers.veeqo.com/api/operations/list-all-purchase-orders/" target="_blank">
+                https://developers.veeqo.com/api/operations/list-all-purchase-orders/
+            </a></p>
+            <div id="purchase-orders-result" style="margin-top: 15px; padding: 15px; background: #fff; border-radius: 4px; display: none;">
+                <h4>Purchase Orders Result:</h4>
+                <pre id="purchase-orders-data"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function processAllOrders() {
+            document.getElementById('loading').style.display = 'block';
+            
+            fetch('/process_veeqo_orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loading').style.display = 'none';
+                
+                if (data.status === 'success') {
+                    alert(`Successfully processed ${data.successful}/${data.processed} Veeqo orders!`);
+                    location.reload();
+                } else {
+                    alert('Error processing orders: ' + data.message);
+                }
+            })
+            .catch(error => {
+                document.getElementById('loading').style.display = 'none';
+                alert('Error: ' + error);
+            });
+        }
+        
+        function processSingleOrder(customerName) {
+            fetch(`/create_veeqo_order/${encodeURIComponent(customerName)}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(`Veeqo order created successfully for ${customerName}!`);
+                } else {
+                    alert('Error creating order: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('Error: ' + error);
+            });
+        }
+        
+        function fetchPurchaseOrders() {
+            document.getElementById('loading').style.display = 'block';
+            
+            fetch('/api/veeqo_purchase_orders')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loading').style.display = 'none';
+                
+                if (data.status === 'success') {
+                    const resultDiv = document.getElementById('purchase-orders-result');
+                    const dataElement = document.getElementById('purchase-orders-data');
+                    
+                    resultDiv.style.display = 'block';
+                    dataElement.textContent = JSON.stringify(data, null, 2);
+                    
+                    alert(`Found ${data.count} purchase orders. See results below.`);
+                } else {
+                    alert('Error fetching purchase orders: ' + data.message);
+                }
+            })
+            .catch(error => {
+                document.getElementById('loading').style.display = 'none';
+                alert('Error: ' + error);
+            });
+        }
+    </script>
+</body>
+</html>
