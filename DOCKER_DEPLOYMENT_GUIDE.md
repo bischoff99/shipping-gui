@@ -2,6 +2,22 @@
 
 Your Docker image `shipping-gui` is built and ready. Here are the best deployment options:
 
+## Option 0: Quick Test with ngrok (Immediate Access)
+
+### For immediate public access without deployment:
+```powershell
+# 1. Make sure Flask app is running:
+python app.py
+
+# 2. In another terminal, run ngrok:
+# If ngrok is in Downloads folder:
+~/Downloads/ngrok.exe http 5000
+
+# Or run our helper script:
+powershell -ExecutionPolicy Bypass -File ngrok_deploy.ps1
+```
+This gives you a public URL instantly (e.g., https://abc123.ngrok.io)
+
 ## Option 1: Docker Hub + Cloud Run (Google) - EASIEST
 
 ### Step 1: Push to Docker Hub
