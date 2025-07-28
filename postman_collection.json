@@ -1,0 +1,665 @@
+{
+  "info": {
+    "name": "Order & Warehouse Management System API",
+    "description": "Comprehensive API testing collection for the unified order and warehouse management system. This collection includes endpoints for customer management, order processing, inventory monitoring, and product synchronization.",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "description": "Base URL for the Flask application"
+    },
+    {
+      "key": "veeqo_api_key",
+      "value": "{{VEEQO_API_KEY}}",
+      "description": "Veeqo API key from environment"
+    },
+    {
+      "key": "easyship_api_key",
+      "value": "{{EASYSHIP_API_KEY}}",
+      "description": "Easyship API key from environment"
+    }
+  ],
+  "item": [
+    {
+      "name": "Customer Management",
+      "item": [
+        {
+          "name": "Parse Customer Input",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"input\": \"John Doe\\t+1234567890 john@example.com\\t123 Main St\\t\\tLas Vegas\\tNevada\\t89101\\tUS\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/parse_customer",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parse_customer"]
+            },
+            "description": "Parse customer input in tab-separated format"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success status\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.status).to.eql('success');",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains parsed customer data\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('name');",
+                  "    pm.expect(jsonData.data).to.have.property('email');",
+                  "    pm.expect(jsonData.data).to.have.property('phone');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Data Synchronization",
+      "item": [
+        {
+          "name": "Sync All Data",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/sync_data",
+              "host": ["{{base_url}}"],
+              "path": ["sync_data"]
+            },
+            "description": "Synchronize warehouses and products from both Veeqo and Easyship"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains sync data\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('status');",
+                  "    pm.expect(jsonData).to.have.property('veeqo_warehouses');",
+                  "    pm.expect(jsonData).to.have.property('easyship_addresses');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Manual Product Sync",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/sync_products",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sync_products"]
+            },
+            "description": "Trigger manual bidirectional product synchronization"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Sync operation completed\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('status');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Inventory Management",
+      "item": [
+        {
+          "name": "Get Inventory Alerts",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/inventory_alerts",
+              "host": ["{{base_url}}"],
+              "path": ["api", "inventory_alerts"]
+            },
+            "description": "Retrieve active inventory alerts"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response is an array\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Inventory Summary",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/inventory_summary",
+              "host": ["{{base_url}}"],
+              "path": ["api", "inventory_summary"]
+            },
+            "description": "Get comprehensive inventory summary"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains summary data\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Resolve Alert",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/api/resolve_alert/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "resolve_alert", "1"]
+            },
+            "description": "Resolve a specific inventory alert by ID"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 or 404\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 404]);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has status field\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('status');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Reorder Suggestions",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/reorder_suggestions",
+              "host": ["{{base_url}}"],
+              "path": ["api", "reorder_suggestions"]
+            },
+            "description": "Get automated reorder suggestions based on inventory levels"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Product Statistics",
+      "item": [
+        {
+          "name": "Get Product Stats",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/product_stats",
+              "host": ["{{base_url}}"],
+              "path": ["api", "product_stats"]
+            },
+            "description": "Get real-time product statistics and performance data"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains stats data\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('stats');",
+                  "    pm.expect(jsonData).to.have.property('performance');",
+                  "    pm.expect(jsonData).to.have.property('alerts');",
+                  "    pm.expect(jsonData).to.have.property('alert_count');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Auto-Sync Management",
+      "item": [
+        {
+          "name": "Start Auto Sync",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"interval\": 10\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/start_auto_sync",
+              "host": ["{{base_url}}"],
+              "path": ["api", "start_auto_sync"]
+            },
+            "description": "Start automatic product synchronization with specified interval (minutes)"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Auto-sync started successfully\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.status).to.eql('success');",
+                  "    pm.expect(jsonData.message).to.include('Auto-sync started');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Stop Auto Sync",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/api/stop_auto_sync",
+              "host": ["{{base_url}}"],
+              "path": ["api", "stop_auto_sync"]
+            },
+            "description": "Stop automatic product synchronization"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Auto-sync stopped successfully\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.status).to.eql('success');",
+                  "    pm.expect(jsonData.message).to.include('Auto-sync stopped');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "FedEx Order Processing",
+      "item": [
+        {
+          "name": "Process All FedEx Orders",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/process_fedex_orders",
+              "host": ["{{base_url}}"],
+              "path": ["process_fedex_orders"]
+            },
+            "description": "Process all pending FedEx orders"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Processing results returned\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('status');",
+                  "    pm.expect(jsonData).to.have.property('processed');",
+                  "    pm.expect(jsonData).to.have.property('successful');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create FedEx Order",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/create_fedex_order/john_doe",
+              "host": ["{{base_url}}"],
+              "path": ["create_fedex_order", "john_doe"]
+            },
+            "description": "Create a FedEx order for a specific customer"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 or 500\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 500]);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has status field\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('status');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Veeqo Order Processing",
+      "item": [
+        {
+          "name": "Process All Veeqo Orders",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/process_veeqo_orders",
+              "host": ["{{base_url}}"],
+              "path": ["process_veeqo_orders"]
+            },
+            "description": "Process all pending Veeqo orders"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Processing results returned\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('status');",
+                  "    pm.expect(jsonData).to.have.property('processed');",
+                  "    pm.expect(jsonData).to.have.property('successful');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Veeqo Order",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/create_veeqo_order/jane_smith",
+              "host": ["{{base_url}}"],
+              "path": ["create_veeqo_order", "jane_smith"]
+            },
+            "description": "Create a Veeqo order for a specific customer"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200 or 500\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 500]);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has status field\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('status');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Veeqo Purchase Orders",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/veeqo_purchase_orders",
+              "host": ["{{base_url}}"],
+              "path": ["api", "veeqo_purchase_orders"]
+            },
+            "description": "Retrieve Veeqo purchase orders"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response contains purchase orders data\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('status');",
+                  "    pm.expect(jsonData).to.have.property('purchase_orders');",
+                  "    pm.expect(jsonData).to.have.property('count');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Error Handling Tests",
+      "item": [
+        {
+          "name": "Parse Customer - Invalid Input",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"input\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/parse_customer",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parse_customer"]
+            },
+            "description": "Test customer parsing with empty input (should return error)"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has error status\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.status).to.eql('error');",
+                  "    pm.expect(jsonData).to.have.property('message');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Parse Customer - No JSON",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/api/parse_customer",
+              "host": ["{{base_url}}"],
+              "path": ["api", "parse_customer"]
+            },
+            "description": "Test customer parsing without JSON body (should return error)"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has error status\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.status).to.eql('error');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Resolve Non-existent Alert",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/api/resolve_alert/999999",
+              "host": ["{{base_url}}"],
+              "path": ["api", "resolve_alert", "999999"]
+            },
+            "description": "Test resolving a non-existent alert (should return 404)"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test(\"Response indicates alert not found\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.status).to.eql('error');",
+                  "    pm.expect(jsonData.message).to.include('not found');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Set timestamp for requests",
+          "pm.globals.set('timestamp', new Date().toISOString());"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global test to check response time",
+          "pm.test('Response time is less than 30 seconds', function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(30000);",
+          "});",
+          "",
+          "// Global test to check content type for JSON responses",
+          "if (pm.response.headers.get('Content-Type') && pm.response.headers.get('Content-Type').includes('application/json')) {",
+          "    pm.test('Response is valid JSON', function () {",
+          "        pm.response.to.be.json;",
+          "    });",
+          "}"
+        ]
+      }
+    }
+  ]
+}

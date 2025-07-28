@@ -1,0 +1,23 @@
+[
+  {
+    "id": "426093095",
+    "name": "Canvas Work Jacket",
+    "sku": "",
+    "price": 0.0,
+    "weight": 38.04,
+    "dimensions": {
+      "length": 0.0,
+      "width": 0.0,
+      "height": 0.0
+    },
+    "description": "",
+    "category": "Uncategorized",
+    "brand": "",
+    "inventory": {},
+    "last_synced": "2025-07-22T13:57:05.140234",
+    "sync_status": "synced",
+    "platform": "veeqo",
+    "images": [],
+    "variants": []
+  }
+]

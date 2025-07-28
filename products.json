@@ -15,12 +15,12 @@
       "quantity_to_reorder": 0,
       "created_by_id": 369575,
       "created_at": "2025-07-22T00:29:16.727Z",
-      "updated_at": "2025-07-22T00:29:17.446Z",
+      "updated_at": "2025-07-22T12:30:04.661Z",
       "deleted_at": null,
       "weight_grams": 28.349523125,
       "weight_unit": "oz",
-      "product_title": "Quick product",
-      "full_title": "Quick product",
+      "product_title": "Canvas Work Jacket",
+      "full_title": "Canvas Work Jacket",
       "sellable_title": "",
       "profit": 0.0,
       "margin": 0,
@@ -34,8 +34,8 @@
       "image_url": null,
       "product": {
         "id": 212092440,
-        "title": "Quick product",
-        "weight": 0,
+        "title": "Canvas Work Jacket",
+        "weight": 38,
         "origin_country": "US",
         "hs_tariff_number": null,
         "tax_rate": 0,
@@ -7357,5 +7357,5 @@
       "width": 16.0
     }
   ],
-  "last_updated": "2025-07-22 07:25:38.438533"
+  "last_updated": "2025-07-22 13:57:36.271857"
 }

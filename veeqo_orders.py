@@ -1,17 +1,45 @@
 # Veeqo Orders Processing Module
 # Handle UPS and DHL orders that should be routed through Veeqo based on state preferences
 
+
 from typing import Dict, List, Optional
 from api.veeqo_api import VeeqoAPI
 from utils import normalize_customer_data
 import json
+import logging
+import time
+from requests.exceptions import Timeout, RequestException
 
 class VeeqoOrderProcessor:
     def __init__(self):
         self.veeqo_api = VeeqoAPI()
-        
+        self.logger = logging.getLogger('VeeqoOrderProcessor')
+        if not self.logger.handlers:
+            handler = logging.FileHandler('veeqo_orders.log')
+            formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+            handler.setFormatter(formatter)
+            self.logger.addHandler(handler)
+        self.logger.setLevel(logging.INFO)
         # Predefined Veeqo customer data (UPS and DHL orders based on state preferences)
         self.veeqo_customers = [
+            # ...existing customer dicts...
+        ]
+
+    def _safe_api_call(self, func, *args, retries=3, delay=2, **kwargs):
+        """Call API with timeout/retry handling"""
+        for attempt in range(retries):
+            try:
+                return func(*args, **kwargs)
+            except Timeout as e:
+                self.logger.warning(f"Timeout on attempt {attempt+1}: {e}")
+                time.sleep(delay)
+            except RequestException as e:
+                self.logger.error(f"API request failed: {e}")
+                break
+            except Exception as e:
+                self.logger.error(f"Unexpected error: {e}")
+                break
+        return None
             {
                 "state_preference": "Nevada",
                 "carrier": "UPS",
@@ -154,31 +182,27 @@ class VeeqoOrderProcessor:
         return [c for c in self.veeqo_customers if c['carrier'].upper() == carrier.upper()]
     
     def create_veeqo_order(self, customer_data: Dict, warehouse_id: int = None) -> Optional[Dict]:
-        """Create Veeqo order for customer"""
-        
-        # Get warehouse based on state preference
-        if not warehouse_id:
-            state_pref = customer_data.get('state_preference', 'Nevada')
-            if state_pref.lower() == 'nevada':
-                warehouse = self.veeqo_api.get_warehouse_by_state('Nevada')
-            elif state_pref.lower() == 'california':
-                warehouse = self.veeqo_api.get_warehouse_by_state('California')
-            else:
-                # Default to Nevada or California
-                warehouse = self.veeqo_api.get_warehouse_by_state('Nevada') or self.veeqo_api.get_warehouse_by_state('California')
-            
-            if warehouse:
-                warehouse_id = warehouse.get('id')
-            else:
-                print(f"❌ No suitable warehouse found for {customer_data.get('name')}")
-                return None
-        
-        # Get some products for the order
-        products = self.veeqo_api.get_random_products(3)
-        if not products:
-            print(f"⚠️ No products available, using fallback products for {customer_data.get('name')}")
-            # Fallback products - this shouldn't happen with improved get_random_products
-            products = [
+        """Create Veeqo order for customer with logging and error handling"""
+        try:
+            # Get warehouse based on state preference
+            if not warehouse_id:
+                state_pref = customer_data.get('state_preference', 'Nevada')
+                if state_pref.lower() == 'nevada':
+                    warehouse = self._safe_api_call(self.veeqo_api.get_warehouse_by_state, 'Nevada')
+                elif state_pref.lower() == 'california':
+                    warehouse = self._safe_api_call(self.veeqo_api.get_warehouse_by_state, 'California')
+                else:
+                    warehouse = self._safe_api_call(self.veeqo_api.get_warehouse_by_state, 'Nevada') or self._safe_api_call(self.veeqo_api.get_warehouse_by_state, 'California')
+                if warehouse:
+                    warehouse_id = warehouse.get('id')
+                else:
+                    self.logger.error(f"No suitable warehouse found for {customer_data.get('name')}")
+                    return None
+            # Get some products for the order
+            products = self._safe_api_call(self.veeqo_api.get_random_products, 3)
+            if not products:
+                self.logger.warning(f"No products available, using fallback products for {customer_data.get('name')}")
+                products = [
                 {
                     'id': 'fallback_1',
                     'title': 'Premium Fashion Item',
@@ -199,27 +223,27 @@ class VeeqoOrderProcessor:
                 }
             ]
         
-        # Format customer data for Veeqo
-        formatted_customer = normalize_customer_data({
-            'name': customer_data.get('name', ''),
-            'address_1': customer_data.get('address_1', ''),
-            'city': customer_data.get('city', ''),
-            'state': customer_data.get('state', ''),
-            'postal_code': customer_data.get('postal_code', ''),
-            'country': self._get_country_code_for_veeqo(customer_data.get('country', 'US')),
-            'phone': customer_data.get('phone', ''),
-            'email': customer_data.get('email', '')
-        })
-        
-        # Create order
-        carrier = customer_data.get('carrier', 'UPS')
-        result = self.veeqo_api.create_order(formatted_customer, products, warehouse_id, carrier)
-        
-        if result:
-            print(f"✅ Veeqo {carrier} order created for {customer_data.get('name')}")
+            # Format customer data for Veeqo
+            formatted_customer = normalize_customer_data({
+                'name': customer_data.get('name', ''),
+                'address_1': customer_data.get('address_1', ''),
+                'city': customer_data.get('city', ''),
+                'state': customer_data.get('state', ''),
+                'postal_code': customer_data.get('postal_code', ''),
+                'country': self._get_country_code_for_veeqo(customer_data.get('country', 'US')),
+                'phone': customer_data.get('phone', ''),
+                'email': customer_data.get('email', '')
+            })
+            carrier = customer_data.get('carrier', 'UPS')
+            self.logger.info(f"Creating order for {customer_data.get('name')} at warehouse {warehouse_id}")
+            result = self._safe_api_call(self.veeqo_api.create_order, formatted_customer, products, warehouse_id, carrier)
+            if result:
+                self.logger.info(f"Order created: {result.get('id', 'N/A')}")
+            else:
+                self.logger.error(f"Order creation failed for {customer_data.get('name')}")
             return result
-        else:
-            print(f"❌ Failed to create Veeqo order for {customer_data.get('name')}")
+        except Exception as e:
+            self.logger.error(f"Exception in create_veeqo_order: {e}")
             return None
     
     def _get_country_code_for_veeqo(self, country_code: str) -> str:
@@ -233,23 +257,19 @@ class VeeqoOrderProcessor:
         return country_mapping.get(country_code.upper(), 'US')
     
     def process_all_veeqo_orders(self) -> List[Dict]:
-        """Process all predefined Veeqo customers"""
+        """Process all predefined Veeqo customers efficiently with logging"""
         results = []
-        
-        print(f"🚀 Processing {len(self.veeqo_customers)} Veeqo orders...")
-        
+        self.logger.info(f"Processing {len(self.veeqo_customers)} Veeqo orders...")
         for customer in self.veeqo_customers:
-            print(f"Processing {customer['carrier']} order for {customer['name']} (State pref: {customer['state_preference']})...")
+            self.logger.info(f"Processing {customer['carrier']} order for {customer['name']} (State pref: {customer['state_preference']})...")
             result = self.create_veeqo_order(customer)
             results.append({
                 'customer': customer,
                 'result': result,
                 'success': result is not None
             })
-        
         successful = sum(1 for r in results if r['success'])
-        print(f"✅ Processed {successful}/{len(results)} Veeqo orders successfully")
-        
+        self.logger.info(f"Processed {successful}/{len(results)} Veeqo orders successfully")
         return results
     
     def get_veeqo_customer_summary(self) -> Dict:
@@ -282,10 +302,30 @@ class VeeqoOrderProcessor:
         return summary
     
     def get_purchase_orders(self) -> List[Dict]:
-        """Get Veeqo purchase orders using the API"""
+        """Get Veeqo purchase orders using the API with robust parsing and logging"""
         try:
-            purchase_orders = self.veeqo_api.get_purchase_orders()
-            return purchase_orders if purchase_orders else []
+            response = self._safe_api_call(self.veeqo_api.get_purchase_orders)
+            if not response:
+                self.logger.warning("No purchase orders returned from API")
+                return []
+            # Ensure response is a list or dict with 'purchase_orders'
+            if isinstance(response, dict) and 'purchase_orders' in response:
+                orders = response.get('purchase_orders', [])
+            elif isinstance(response, list):
+                orders = response
+            else:
+                self.logger.error(f"Unexpected response format: {type(response)}")
+                return []
+            # Only keep necessary fields for efficiency
+            return [
+                {
+                    'id': order.get('id'),
+                    'reference': order.get('reference'),
+                    'status': order.get('status'),
+                    'created_at': order.get('created_at')
+                }
+                for order in orders
+            ]
         except Exception as e:
-            print(f"❌ Error fetching purchase orders: {e}")
+            self.logger.error(f"Error fetching purchase orders: {e}")
             return []

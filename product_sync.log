@@ -1,0 +1,13 @@
+2025-07-22 13:51:12,840 - INFO - Starting bidirectional product sync...
+2025-07-22 13:51:12,840 - INFO - Fetching products from all platforms...
+2025-07-22 13:51:13,637 - INFO - Fetched 42 products from Veeqo
+2025-07-22 13:51:13,637 - INFO - Fetched 0 products from Easyship (no direct product API)
+2025-07-22 13:51:14,822 - INFO - Saved 1 products to file
+2025-07-22 13:51:14,823 - INFO - Sync completed in 1.98 seconds
+2025-07-22 13:57:04,019 - INFO - Starting bidirectional product sync...
+2025-07-22 13:57:04,019 - INFO - Fetching products from all platforms...
+2025-07-22 13:57:05,140 - INFO - Fetched 42 products from Veeqo
+2025-07-22 13:57:05,143 - INFO - Fetched 0 products from Easyship (no direct product API)
+2025-07-22 13:57:05,816 - INFO - Auto-sync started with 5 minute interval
+2025-07-22 13:57:05,905 - INFO - Saved 1 products to file
+2025-07-22 13:57:05,905 - INFO - Sync completed in 1.89 seconds
