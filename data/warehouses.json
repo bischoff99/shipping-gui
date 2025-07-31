@@ -1,0 +1,17 @@
+{
+  "veeqo": [
+    {
+      "id": 1,
+      "name": "Nevada Warehouse",
+      "region": "Nevada",
+      "address_line_1": "456 Warehouse Ave"
+    }
+  ],
+  "easyship": [
+    {
+      "id": 1,
+      "name": "Easyship Address"
+    }
+  ],
+  "last_updated": "2025-07-29 01:03:49.653926"
+}

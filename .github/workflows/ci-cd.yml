@@ -1,0 +1,341 @@
+name: 🚀 MCP-Enhanced CI/CD Pipeline
+# Advanced CI/CD workflow with comprehensive testing and security
+
+on:
+  push:
+    branches: [ main, develop, gui-integrated ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    - cron: '0 6 * * 1'  # Weekly security scan
+
+env:
+  PYTHON_VERSION: '3.13'
+  NODE_VERSION: '18'
+
+jobs:
+  # Security and Code Quality Analysis
+  security-analysis:
+    name: 🛡️ Security & Code Quality
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Full history for better analysis
+    
+    - name: 🐍 Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+    
+    - name: 📦 Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install bandit safety flake8 black mypy pytest-cov
+    
+    - name: 🔍 Security Scan with Bandit
+      run: |
+        bandit -r . -f json -o bandit-report.json --exclude=.venv,venv,tests
+        bandit -r . --exclude=.venv,venv,tests
+      continue-on-error: true
+    
+    - name: 🔒 Dependency Security Check
+      run: |
+        safety check --json --output safety-report.json
+        safety check
+      continue-on-error: true
+    
+    - name: 📏 Code Quality with Flake8
+      run: |
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+    
+    - name: 🎨 Code Formatting with Black
+      run: |
+        black --check --diff .
+    
+    - name: 🔎 Type Checking with MyPy
+      run: |
+        mypy --config-file=pyproject.toml .
+      continue-on-error: true
+    
+    - name: 📊 Upload Security Reports
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: security-reports
+        path: |
+          bandit-report.json
+          safety-report.json
+
+  # Comprehensive Testing Suite
+  test-suite:
+    name: 🧪 Test Suite
+    runs-on: ubuntu-latest
+    needs: security-analysis
+    
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12', '3.13']
+        test-type: ['unit', 'integration']
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_DB: test_shipping_gui
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+    
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+    
+    - name: 🐍 Setup Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+    
+    - name: 📦 Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-cov pytest-xdist pytest-mock
+    
+    - name: 🔧 Setup Test Environment
+      env:
+        DATABASE_URL: postgresql://postgres:testpass@localhost:5432/test_shipping_gui
+        REDIS_URL: redis://localhost:6379/0
+        FLASK_ENV: testing
+      run: |
+        export DATABASE_URL=$DATABASE_URL
+        export REDIS_URL=$REDIS_URL
+        export FLASK_ENV=testing
+        python -c "from models import db; db.create_all()"
+    
+    - name: 🧪 Run Unit Tests
+      if: matrix.test-type == 'unit'
+      env:
+        DATABASE_URL: postgresql://postgres:testpass@localhost:5432/test_shipping_gui
+        REDIS_URL: redis://localhost:6379/0
+        FLASK_ENV: testing
+      run: |
+        pytest tests_new/unit/ -v --cov=. --cov-report=xml --cov-report=html
+    
+    - name: 🔗 Run Integration Tests
+      if: matrix.test-type == 'integration'
+      env:
+        DATABASE_URL: postgresql://postgres:testpass@localhost:5432/test_shipping_gui
+        REDIS_URL: redis://localhost:6379/0
+        FLASK_ENV: testing
+        VEEQO_API_KEY: ${{ secrets.VEEQO_TEST_API_KEY }}
+        EASYSHIP_API_KEY: ${{ secrets.EASYSHIP_TEST_API_KEY }}
+      run: |
+        pytest tests_new/integration/ -v --cov=. --cov-report=xml
+    
+    - name: 📊 Upload Coverage Reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: ${{ matrix.test-type }}
+        name: codecov-${{ matrix.python-version }}-${{ matrix.test-type }}
+
+  # Performance Testing
+  performance-testing:
+    name: ⚡ Performance Testing
+    runs-on: ubuntu-latest
+    needs: test-suite
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+    
+    - name: 🐍 Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: 📦 Install Dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install locust
+    
+    - name: 🚀 Start Application
+      run: |
+        python app.py &
+        sleep 10
+      env:
+        FLASK_ENV: testing
+    
+    - name: 📈 Run Load Tests
+      run: |
+        locust --headless --host=http://localhost:5000 -u 10 -r 2 -t 60s --html=load_test_report.html
+    
+    - name: 📊 Upload Performance Reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: performance-reports
+        path: load_test_report.html
+
+  # Docker Build and Security Scan
+  docker-security:
+    name: 🐳 Docker Security
+    runs-on: ubuntu-latest
+    needs: test-suite
+    
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+    
+    - name: 🐳 Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
+    - name: 🔨 Build Docker Image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Dockerfile.production
+        push: false
+        tags: shipping-gui:test
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+    
+    - name: 🔍 Run Trivy Security Scan
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: 'shipping-gui:test'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+    
+    - name: 📊 Upload Trivy Results
+      uses: github/codeql-action/upload-sarif@v2
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+  # Deployment to Staging
+  deploy-staging:
+    name: 🚀 Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [security-analysis, test-suite, performance-testing]
+    if: github.ref == 'refs/heads/develop'
+    environment: staging
+    
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+    
+    - name: 🔧 Setup Deployment Tools
+      run: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        chmod +x kubectl
+        sudo mv kubectl /usr/local/bin/
+    
+    - name: 🚀 Deploy to Kubernetes Staging
+      env:
+        KUBE_CONFIG: ${{ secrets.KUBE_CONFIG_STAGING }}
+        DOCKER_IMAGE: ${{ secrets.DOCKER_REGISTRY }}/shipping-gui:${{ github.sha }}
+      run: |
+        echo "$KUBE_CONFIG" | base64 -d > kubeconfig
+        export KUBECONFIG=kubeconfig
+        kubectl set image deployment/shipping-gui shipping-gui=$DOCKER_IMAGE -n staging
+        kubectl rollout status deployment/shipping-gui -n staging --timeout=300s
+    
+    - name: 🧪 Run Smoke Tests
+      run: |
+        sleep 30  # Wait for deployment
+        curl -f http://staging.shipping-gui.internal/health || exit 1
+        curl -f http://staging.shipping-gui.internal/ready || exit 1
+
+  # Production Deployment
+  deploy-production:
+    name: 🌟 Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [security-analysis, test-suite, performance-testing, docker-security]
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    
+    steps:
+    - name: 📥 Checkout Code
+      uses: actions/checkout@v4
+    
+    - name: 🔧 Setup Deployment Tools
+      run: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        chmod +x kubectl
+        sudo mv kubectl /usr/local/bin/
+    
+    - name: 🚀 Deploy to Production
+      env:
+        KUBE_CONFIG: ${{ secrets.KUBE_CONFIG_PRODUCTION }}
+        DOCKER_IMAGE: ${{ secrets.DOCKER_REGISTRY }}/shipping-gui:${{ github.sha }}
+      run: |
+        echo "$KUBE_CONFIG" | base64 -d > kubeconfig
+        export KUBECONFIG=kubeconfig
+        kubectl set image deployment/shipping-gui shipping-gui=$DOCKER_IMAGE -n production
+        kubectl rollout status deployment/shipping-gui -n production --timeout=600s
+    
+    - name: 🔔 Notify Deployment Success
+      uses: 8398a7/action-slack@v3
+      with:
+        status: success
+        channel: '#deployments'
+        text: '🎉 Shipping GUI deployed to production successfully!'
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # Post-deployment Monitoring
+  post-deployment:
+    name: 📊 Post-deployment Monitoring
+    runs-on: ubuntu-latest
+    needs: deploy-production
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: 🔍 Health Check Monitoring
+      run: |
+        # Wait for deployment to stabilize
+        sleep 60
+        
+        # Check health endpoints
+        for i in {1..5}; do
+          if curl -f https://api.shipping-gui.com/health; then
+            echo "Health check $i: PASSED"
+          else
+            echo "Health check $i: FAILED"
+            exit 1
+          fi
+          sleep 10
+        done
+    
+    - name: 📈 Performance Baseline Check
+      run: |
+        # Quick performance check post-deployment
+        response_time=$(curl -o /dev/null -s -w '%{time_total}' https://api.shipping-gui.com/health)
+        if (( $(echo "$response_time > 2.0" | bc -l) )); then
+          echo "Warning: Response time $response_time seconds is above threshold"
+          exit 1
+        fi
+        echo "Performance check passed: $response_time seconds"

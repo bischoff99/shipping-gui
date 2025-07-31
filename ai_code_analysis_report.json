@@ -1,0 +1,2585 @@
+{
+  "timestamp": "2025-07-31T04:30:20.833371",
+  "project_path": ".",
+  "summary": {
+    "total_files": 135,
+    "analyzed_files": 135,
+    "average_quality_score": 81.98,
+    "average_complexity": 22.36,
+    "total_security_issues": 16,
+    "total_performance_issues": 4,
+    "overall_health": "good"
+  },
+  "files": {
+    "./routing.py": {
+      "file_path": "./routing.py",
+      "quality_score": 85.5,
+      "complexity_score": 26,
+      "maintainability_index": 84.43,
+      "security_issues": [
+        {
+          "type": "weak_random",
+          "severity": "medium",
+          "line": 254,
+          "description": "Use of weak random number generator",
+          "code_snippet": "return random.choice(warehouses) if warehouses else {}",
+          "recommendation": "Use secrets module for cryptographic purposes"
+        }
+      ],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'select_optimal_warehouse' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./debug_complete_flow.py": {
+      "file_path": "./debug_complete_flow.py",
+      "quality_score": 99.0,
+      "complexity_score": 8,
+      "maintainability_index": 94.86,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./fedex_orders.py": {
+      "file_path": "./fedex_orders.py",
+      "quality_score": 71.66666666666667,
+      "complexity_score": 30,
+      "maintainability_index": 81.23,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function '__init__' (>50 lines)",
+        "Consider breaking down function 'create_fedex_shipment' (>50 lines)",
+        "Consider breaking down function 'save_order_to_database' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./test_api_connectivity.py": {
+      "file_path": "./test_api_connectivity.py",
+      "quality_score": 78.5,
+      "complexity_score": 30,
+      "maintainability_index": 83.72,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./gunicorn_config.py": {
+      "file_path": "./gunicorn_config.py",
+      "quality_score": 100.0,
+      "complexity_score": 1,
+      "maintainability_index": 98.95,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./debug_order_error.py": {
+      "file_path": "./debug_order_error.py",
+      "quality_score": 99.0,
+      "complexity_score": 9,
+      "maintainability_index": 94.91,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./debug_channels.py": {
+      "file_path": "./debug_channels.py",
+      "quality_score": 98.0,
+      "complexity_score": 10,
+      "maintainability_index": 94.55,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./database_utils.py": {
+      "file_path": "./database_utils.py",
+      "quality_score": 30.0,
+      "complexity_score": 55,
+      "maintainability_index": 69.38,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'migrate_warehouses_from_json' (>50 lines)",
+        "Consider breaking down function 'migrate_products_from_json' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./test_flask_startup.py": {
+      "file_path": "./test_flask_startup.py",
+      "quality_score": 71.5,
+      "complexity_score": 34,
+      "maintainability_index": 80.75,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'test_flask_startup' (>50 lines)",
+        "Consider breaking down function 'main' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./debug_veeqo_endpoints.py": {
+      "file_path": "./debug_veeqo_endpoints.py",
+      "quality_score": 99.0,
+      "complexity_score": 13,
+      "maintainability_index": 92.91,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./utils.py": {
+      "file_path": "./utils.py",
+      "quality_score": 95.5,
+      "complexity_score": 21,
+      "maintainability_index": 88.23,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'parse_customer_input' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./debug_customer_parsing.py": {
+      "file_path": "./debug_customer_parsing.py",
+      "quality_score": 100.0,
+      "complexity_score": 13,
+      "maintainability_index": 92.66,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./test_enhanced_parsing.py": {
+      "file_path": "./test_enhanced_parsing.py",
+      "quality_score": 100.0,
+      "complexity_score": 18,
+      "maintainability_index": 88.95,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'test_natural_language_parsing' (>50 lines)",
+        "Consider breaking down function 'test_data_quality_scoring' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./debug_validation.py": {
+      "file_path": "./debug_validation.py",
+      "quality_score": 98.0,
+      "complexity_score": 12,
+      "maintainability_index": 93.16,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./test_order_creation.py": {
+      "file_path": "./test_order_creation.py",
+      "quality_score": 79.5,
+      "complexity_score": 29,
+      "maintainability_index": 84.08,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'test_order_creation' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./debug_existing_orders.py": {
+      "file_path": "./debug_existing_orders.py",
+      "quality_score": 99.5,
+      "complexity_score": 15,
+      "maintainability_index": 91.82,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./mcp_pdb_integration.py": {
+      "file_path": "./mcp_pdb_integration.py",
+      "quality_score": 100.0,
+      "complexity_score": 10,
+      "maintainability_index": 93.66,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./debug_routing.py": {
+      "file_path": "./debug_routing.py",
+      "quality_score": 98.5,
+      "complexity_score": 12,
+      "maintainability_index": 93.25,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./test_order_workflow.py": {
+      "file_path": "./test_order_workflow.py",
+      "quality_score": 82.5,
+      "complexity_score": 28,
+      "maintainability_index": 84.41,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'test_api_endpoints' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./app.py": {
+      "file_path": "./app.py",
+      "quality_score": 0.0,
+      "complexity_score": 149,
+      "maintainability_index": 15.4,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'create_order' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./test_core_workflows.py": {
+      "file_path": "./test_core_workflows.py",
+      "quality_score": 60.5,
+      "complexity_score": 37,
+      "maintainability_index": 78.87,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'test_order_validation' (>50 lines)",
+        "Consider breaking down function 'test_order_creation_flow' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./ai_config.py": {
+      "file_path": "./ai_config.py",
+      "quality_score": 100.0,
+      "complexity_score": 6,
+      "maintainability_index": 95.95,
+      "security_issues": [],
+      "performance_issues": [
+        {
+          "type": "global_variable",
+          "severity": "low",
+          "line": 105,
+          "description": "Global variable usage detected",
+          "code_snippet": "global PRIMARY_NER_MODEL, MODEL_CONFIG, PARSING_THRESHOLDS",
+          "recommendation": "Consider using class attributes or dependency injection"
+        }
+      ],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./advanced_product_sync.py": {
+      "file_path": "./advanced_product_sync.py",
+      "quality_score": 62.57142857142857,
+      "complexity_score": 38,
+      "maintainability_index": 77.56,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design",
+          "async_programming"
+        ]
+      }
+    },
+    "./app_factory.py": {
+      "file_path": "./app_factory.py",
+      "quality_score": 100.0,
+      "complexity_score": 16,
+      "maintainability_index": 90.28,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'register_health_check' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./debug_fedex_shipping.py": {
+      "file_path": "./debug_fedex_shipping.py",
+      "quality_score": 100.0,
+      "complexity_score": 15,
+      "maintainability_index": 91.21,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./debug_final_order.py": {
+      "file_path": "./debug_final_order.py",
+      "quality_score": 99.5,
+      "complexity_score": 4,
+      "maintainability_index": 97.6,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./config.py": {
+      "file_path": "./config.py",
+      "quality_score": 98.0,
+      "complexity_score": 3,
+      "maintainability_index": 97.68,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./validation.py": {
+      "file_path": "./validation.py",
+      "quality_score": 62.0,
+      "complexity_score": 39,
+      "maintainability_index": 78.68,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./example_integration.py": {
+      "file_path": "./example_integration.py",
+      "quality_score": 100.0,
+      "complexity_score": 16,
+      "maintainability_index": 90.05,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'demonstrate_enhanced_parsing' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./test_detailed_order.py": {
+      "file_path": "./test_detailed_order.py",
+      "quality_score": 84.5,
+      "complexity_score": 27,
+      "maintainability_index": 85.42,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'test_detailed_order' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./test_complete_system.py": {
+      "file_path": "./test_complete_system.py",
+      "quality_score": 98.5,
+      "complexity_score": 19,
+      "maintainability_index": 89.11,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'test_complete_system' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./debug_veeqo_order.py": {
+      "file_path": "./debug_veeqo_order.py",
+      "quality_score": 97.0,
+      "complexity_score": 14,
+      "maintainability_index": 91.97,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./debug_api_load.py": {
+      "file_path": "./debug_api_load.py",
+      "quality_score": 100.0,
+      "complexity_score": 9,
+      "maintainability_index": 94.99,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./debug_line_items.py": {
+      "file_path": "./debug_line_items.py",
+      "quality_score": 99.5,
+      "complexity_score": 9,
+      "maintainability_index": 94.25,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./test_csv_export.py": {
+      "file_path": "./test_csv_export.py",
+      "quality_score": 100.0,
+      "complexity_score": 13,
+      "maintainability_index": 92.41,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./veeqo_orders.py": {
+      "file_path": "./veeqo_orders.py",
+      "quality_score": 75.0,
+      "complexity_score": 32,
+      "maintainability_index": 80.51,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function '__init__' (>50 lines)",
+        "Consider breaking down function 'create_veeqo_order' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./models.py": {
+      "file_path": "./models.py",
+      "quality_score": 75.875,
+      "complexity_score": 27,
+      "maintainability_index": 81.41,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'create_sample_data' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./debug_warehouse_lookup.py": {
+      "file_path": "./debug_warehouse_lookup.py",
+      "quality_score": 93.0,
+      "complexity_score": 18,
+      "maintainability_index": 90.47,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./debug_order_structure.py": {
+      "file_path": "./debug_order_structure.py",
+      "quality_score": 97.5,
+      "complexity_score": 15,
+      "maintainability_index": 91.55,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./management/csv_cli.py": {
+      "file_path": "./management/csv_cli.py",
+      "quality_score": 100.0,
+      "complexity_score": 6,
+      "maintainability_index": 96.6,
+      "security_issues": [
+        {
+          "type": "command_injection",
+          "severity": "high",
+          "line": 45,
+          "description": "Potential command injection vulnerability",
+          "code_snippet": "subprocess.run([venv_python] + sys.argv)",
+          "recommendation": "Validate and sanitize user input before system calls"
+        }
+      ],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./api/veeqo_api.py": {
+      "file_path": "./api/veeqo_api.py",
+      "quality_score": 57.230769230769226,
+      "complexity_score": 40,
+      "maintainability_index": 77.19,
+      "security_issues": [
+        {
+          "type": "weak_random",
+          "severity": "medium",
+          "line": 126,
+          "description": "Use of weak random number generator",
+          "code_snippet": "product[\"price\"] = random.choice(",
+          "recommendation": "Use secrets module for cryptographic purposes"
+        },
+        {
+          "type": "weak_random",
+          "severity": "medium",
+          "line": 194,
+          "description": "Use of weak random number generator",
+          "code_snippet": "\"title\": f\"{random.choice(product_names)} #{index + 1}\",",
+          "recommendation": "Use secrets module for cryptographic purposes"
+        },
+        {
+          "type": "weak_random",
+          "severity": "medium",
+          "line": 195,
+          "description": "Use of weak random number generator",
+          "code_snippet": "\"price\": random.choice(prices),",
+          "recommendation": "Use secrets module for cryptographic purposes"
+        },
+        {
+          "type": "weak_random",
+          "severity": "medium",
+          "line": 200,
+          "description": "Use of weak random number generator",
+          "code_snippet": "\"category\": random.choice(",
+          "recommendation": "Use secrets module for cryptographic purposes"
+        }
+      ],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'make_request' (>50 lines)",
+        "Consider breaking down function '_generate_dummy_products' (>50 lines)",
+        "Consider breaking down function 'create_order' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./api/easyship_api.py": {
+      "file_path": "./api/easyship_api.py",
+      "quality_score": 74.5,
+      "complexity_score": 32,
+      "maintainability_index": 81.49,
+      "security_issues": [
+        {
+          "type": "weak_random",
+          "severity": "medium",
+          "line": 125,
+          "description": "Use of weak random number generator",
+          "code_snippet": "product[\"price\"] = random.choice([25.0, 35.0, 45.0, 55.0])",
+          "recommendation": "Use secrets module for cryptographic purposes"
+        },
+        {
+          "type": "weak_random",
+          "severity": "medium",
+          "line": 190,
+          "description": "Use of weak random number generator",
+          "code_snippet": "\"title\": f\"{random.choice(product_names)} #{index + 1}\",",
+          "recommendation": "Use secrets module for cryptographic purposes"
+        },
+        {
+          "type": "weak_random",
+          "severity": "medium",
+          "line": 191,
+          "description": "Use of weak random number generator",
+          "code_snippet": "\"price\": random.choice(prices),",
+          "recommendation": "Use secrets module for cryptographic purposes"
+        },
+        {
+          "type": "weak_random",
+          "severity": "medium",
+          "line": 196,
+          "description": "Use of weak random number generator",
+          "code_snippet": "\"category\": random.choice(",
+          "recommendation": "Use secrets module for cryptographic purposes"
+        }
+      ],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'make_request' (>50 lines)",
+        "Consider breaking down function '_generate_dummy_products' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./api/__init__.py": {
+      "file_path": "./api/__init__.py",
+      "quality_score": 100.0,
+      "complexity_score": 1,
+      "maintainability_index": 99.49,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./config/logging_config.py": {
+      "file_path": "./config/logging_config.py",
+      "quality_score": 100.0,
+      "complexity_score": 3,
+      "maintainability_index": 97.85,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'setup_logging' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./config/celeryconfig.py": {
+      "file_path": "./config/celeryconfig.py",
+      "quality_score": 100.0,
+      "complexity_score": 1,
+      "maintainability_index": 99.43,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./config/__init__.py": {
+      "file_path": "./config/__init__.py",
+      "quality_score": 100.0,
+      "complexity_score": 1,
+      "maintainability_index": 99.31,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./config/production.py": {
+      "file_path": "./config/production.py",
+      "quality_score": 100.0,
+      "complexity_score": 6,
+      "maintainability_index": 95.76,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./GUI/integration_launcher.py": {
+      "file_path": "./GUI/integration_launcher.py",
+      "quality_score": 98.0,
+      "complexity_score": 17,
+      "maintainability_index": 86.78,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'create_interface' (>50 lines)",
+        "Consider breaking down function 'create_interface_card' (>50 lines)",
+        "Consider breaking down function 'view_system_logs' (>50 lines)",
+        "Consider breaking down function 'show_help' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./GUI/unified_warehouse_system.py": {
+      "file_path": "./GUI/unified_warehouse_system.py",
+      "quality_score": 53.21428571428571,
+      "complexity_score": 41,
+      "maintainability_index": 68.26,
+      "security_issues": [
+        {
+          "type": "hardcoded_secret",
+          "severity": "critical",
+          "line": 35,
+          "description": "Potential hardcoded secret detected",
+          "code_snippet": "self.veeqo_api_key = \"Vqt/2d967ce051cfc67054fa4cf14d9f24e7\"",
+          "recommendation": "Use environment variables or secure secret management"
+        },
+        {
+          "type": "hardcoded_secret",
+          "severity": "critical",
+          "line": 37,
+          "description": "Potential hardcoded secret detected",
+          "code_snippet": "self.easyship_api_key = \"prod_VC6QKi48mtqwXpXJubfmT/MsOmzTIG0Qyd89/X61ylc=\"",
+          "recommendation": "Use environment variables or secure secret management"
+        }
+      ],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'create_dashboard_tab' (>50 lines)",
+        "Consider breaking down function 'create_warehouse_tab' (>50 lines)",
+        "Consider breaking down function 'create_routing_tab' (>50 lines)",
+        "Consider breaking down function 'create_orders_tab' (>50 lines)",
+        "Consider breaking down function 'create_excel_reports_tab' (>50 lines)",
+        "Consider breaking down function 'create_sync_monitoring_tab' (>50 lines)",
+        "Consider breaking down function 'create_web_interface_tab' (>50 lines)",
+        "Consider breaking down function 'create_settings_tab' (>50 lines)",
+        "Consider breaking down function 'show_user_guide' (>50 lines)",
+        "Class 'UnifiedWarehouseSystem' has many methods - consider splitting"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./tasks/celery_worker.py": {
+      "file_path": "./tasks/celery_worker.py",
+      "quality_score": 100.0,
+      "complexity_score": 2,
+      "maintainability_index": 98.76,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./tests/test_app.py": {
+      "file_path": "./tests/test_app.py",
+      "quality_score": 100.0,
+      "complexity_score": 12,
+      "maintainability_index": 93.44,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'test_application' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./tests/conftest.py": {
+      "file_path": "./tests/conftest.py",
+      "quality_score": 100.0,
+      "complexity_score": 5,
+      "maintainability_index": 95.43,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'create_test_data' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./tests/test_utils.py": {
+      "file_path": "./tests/test_utils.py",
+      "quality_score": 47.5,
+      "complexity_score": 46,
+      "maintainability_index": 75.26,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./tests/test_api_responses.py": {
+      "file_path": "./tests/test_api_responses.py",
+      "quality_score": 100.0,
+      "complexity_score": 9,
+      "maintainability_index": 89.98,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./tests/test_api_endpoints.py": {
+      "file_path": "./tests/test_api_endpoints.py",
+      "quality_score": 31.0,
+      "complexity_score": 54,
+      "maintainability_index": 71.13,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./tests/test_integration.py": {
+      "file_path": "./tests/test_integration.py",
+      "quality_score": 30.5,
+      "complexity_score": 52,
+      "maintainability_index": 70.88,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'test_complete_order_creation_flow_veeqo' (>50 lines)",
+        "Consider breaking down function 'test_complete_order_creation_flow_easyship' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./tests/test_api_integration.py": {
+      "file_path": "./tests/test_api_integration.py",
+      "quality_score": 75.5,
+      "complexity_score": 32,
+      "maintainability_index": 80.03,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./tests/test_models.py": {
+      "file_path": "./tests/test_models.py",
+      "quality_score": 64.0,
+      "complexity_score": 38,
+      "maintainability_index": 79.43,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./tests/test_api_keys.py": {
+      "file_path": "./tests/test_api_keys.py",
+      "quality_score": 100.0,
+      "complexity_score": 1,
+      "maintainability_index": 100.0,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./tests/test_routing.py": {
+      "file_path": "./tests/test_routing.py",
+      "quality_score": 51.5,
+      "complexity_score": 42,
+      "maintainability_index": 77.23,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./tests/run_tests.py": {
+      "file_path": "./tests/run_tests.py",
+      "quality_score": 76.5,
+      "complexity_score": 31,
+      "maintainability_index": 81.9,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'main' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./tests/__init__.py": {
+      "file_path": "./tests/__init__.py",
+      "quality_score": 100.0,
+      "complexity_score": 1,
+      "maintainability_index": 99.49,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./tests/test_validation.py": {
+      "file_path": "./tests/test_validation.py",
+      "quality_score": 62.0,
+      "complexity_score": 38,
+      "maintainability_index": 78.48,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./tests/test_config.py": {
+      "file_path": "./tests/test_config.py",
+      "quality_score": 100.0,
+      "complexity_score": 4,
+      "maintainability_index": 94.92,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./tests/test_security.py": {
+      "file_path": "./tests/test_security.py",
+      "quality_score": 52.0,
+      "complexity_score": 44,
+      "maintainability_index": 76.23,
+      "security_issues": [
+        {
+          "type": "hardcoded_secret",
+          "severity": "critical",
+          "line": 24,
+          "description": "Potential hardcoded secret detected",
+          "code_snippet": "api_key = 'test_api_key_123'",
+          "recommendation": "Use environment variables or secure secret management"
+        },
+        {
+          "type": "hardcoded_secret",
+          "severity": "critical",
+          "line": 168,
+          "description": "Potential hardcoded secret detected",
+          "code_snippet": "test_key = 'test_active_key'",
+          "recommendation": "Use environment variables or secure secret management"
+        },
+        {
+          "type": "hardcoded_secret",
+          "severity": "critical",
+          "line": 183,
+          "description": "Potential hardcoded secret detected",
+          "code_snippet": "test_key = 'test_inactive_key'",
+          "recommendation": "Use environment variables or secure secret management"
+        }
+      ],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./tests/csv/test_csv_cli.py": {
+      "file_path": "./tests/csv/test_csv_cli.py",
+      "quality_score": 99.5,
+      "complexity_score": 4,
+      "maintainability_index": 97.74,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./tests/csv/test_csv_integration.py": {
+      "file_path": "./tests/csv/test_csv_integration.py",
+      "quality_score": 99.0,
+      "complexity_score": 7,
+      "maintainability_index": 96.14,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./tools/install_dependencies.py": {
+      "file_path": "./tools/install_dependencies.py",
+      "quality_score": 83.0,
+      "complexity_score": 28,
+      "maintainability_index": 84.12,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./tools/gui_launcher.py": {
+      "file_path": "./tools/gui_launcher.py",
+      "quality_score": 100.0,
+      "complexity_score": 15,
+      "maintainability_index": 89.01,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'create_interface_options' (>50 lines)",
+        "Consider breaking down function 'show_advanced_features' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./tools/mcp_debug_helper.py": {
+      "file_path": "./tools/mcp_debug_helper.py",
+      "quality_score": 49.888888888888886,
+      "complexity_score": 42,
+      "maintainability_index": 76.61,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'main' (>50 lines)",
+        "Consider breaking down function 'create_debug_script' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./tools/init_db.py": {
+      "file_path": "./tools/init_db.py",
+      "quality_score": 100.0,
+      "complexity_score": 4,
+      "maintainability_index": 97.66,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./tools/validate_setup.py": {
+      "file_path": "./tools/validate_setup.py",
+      "quality_score": 100.0,
+      "complexity_score": 9,
+      "maintainability_index": 95.04,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./tools/run_production.py": {
+      "file_path": "./tools/run_production.py",
+      "quality_score": 75.0,
+      "complexity_score": 32,
+      "maintainability_index": 82.23,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./tools/start_app.py": {
+      "file_path": "./tools/start_app.py",
+      "quality_score": 100.0,
+      "complexity_score": 15,
+      "maintainability_index": 91.91,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'main' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./tools/run_postman_tests.py": {
+      "file_path": "./tools/run_postman_tests.py",
+      "quality_score": 32.63636363636364,
+      "complexity_score": 53,
+      "maintainability_index": 68.98,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'run_tests' (>50 lines)",
+        "Consider breaking down function '_generate_report' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./src/core/ai_code_analyzer.py": {
+      "file_path": "./src/core/ai_code_analyzer.py",
+      "quality_score": 12.911764705882348,
+      "complexity_score": 56,
+      "maintainability_index": 68.05,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design",
+          "async_programming"
+        ]
+      }
+    },
+    "./src/core/app_factory.py": {
+      "file_path": "./src/core/app_factory.py",
+      "quality_score": 100.0,
+      "complexity_score": 5,
+      "maintainability_index": 95.72,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./src/middleware/security.py": {
+      "file_path": "./src/middleware/security.py",
+      "quality_score": 100.0,
+      "complexity_score": 16,
+      "maintainability_index": 89.79,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./src/routes/api.py": {
+      "file_path": "./src/routes/api.py",
+      "quality_score": 55.0,
+      "complexity_score": 41,
+      "maintainability_index": 76.16,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./src/routes/__init__.py": {
+      "file_path": "./src/routes/__init__.py",
+      "quality_score": 100.0,
+      "complexity_score": 1,
+      "maintainability_index": 99.46,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./src/routes/health.py": {
+      "file_path": "./src/routes/health.py",
+      "quality_score": 32.0,
+      "complexity_score": 51,
+      "maintainability_index": 71.93,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'health_check' (>50 lines)",
+        "Consider breaking down function 'readiness_check' (>50 lines)",
+        "Consider breaking down function 'metrics_endpoint' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./src/routes/dashboard.py": {
+      "file_path": "./src/routes/dashboard.py",
+      "quality_score": 68.0,
+      "complexity_score": 36,
+      "maintainability_index": 78.42,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./src/routes/orders.py": {
+      "file_path": "./src/routes/orders.py",
+      "quality_score": 74.0,
+      "complexity_score": 33,
+      "maintainability_index": 81.66,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'create_order' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./services/order_processor.py": {
+      "file_path": "./services/order_processor.py",
+      "quality_score": 47.230769230769226,
+      "complexity_score": 46,
+      "maintainability_index": 73.09,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'process_order' (>50 lines)",
+        "Consider breaking down function '_check_inventory_availability' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./services/inventory_monitor.py": {
+      "file_path": "./services/inventory_monitor.py",
+      "quality_score": 46.0,
+      "complexity_score": 46,
+      "maintainability_index": 73.5,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function '_check_inventory_levels' (>50 lines)",
+        "Consider breaking down function 'get_inventory_summary' (>50 lines)",
+        "Consider breaking down function 'generate_reorder_suggestions' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./services/ai_enhanced_features.py": {
+      "file_path": "./services/ai_enhanced_features.py",
+      "quality_score": 0.0,
+      "complexity_score": 81,
+      "maintainability_index": 54.69,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function '_ai_analyze_error' (>50 lines)",
+        "Class 'AIEnhancedFeatures' has many methods - consider splitting"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./services/mcp_integration.py": {
+      "file_path": "./services/mcp_integration.py",
+      "quality_score": 79.5,
+      "complexity_score": 27,
+      "maintainability_index": 84.32,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./services/mcp_order_processor.py": {
+      "file_path": "./services/mcp_order_processor.py",
+      "quality_score": 97.5,
+      "complexity_score": 21,
+      "maintainability_index": 87.88,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./services/csv_integration.py": {
+      "file_path": "./services/csv_integration.py",
+      "quality_score": 17.64285714285714,
+      "complexity_score": 56,
+      "maintainability_index": 69.54,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'get_order_export_summary' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./services/__init__.py": {
+      "file_path": "./services/__init__.py",
+      "quality_score": 100.0,
+      "complexity_score": 1,
+      "maintainability_index": 99.49,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./services/csv_processor.py": {
+      "file_path": "./services/csv_processor.py",
+      "quality_score": 100.0,
+      "complexity_score": 4,
+      "maintainability_index": 97.84,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./middleware/auth.py": {
+      "file_path": "./middleware/auth.py",
+      "quality_score": 100.0,
+      "complexity_score": 2,
+      "maintainability_index": 98.88,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./middleware/csrf_protection.py": {
+      "file_path": "./middleware/csrf_protection.py",
+      "quality_score": 100.0,
+      "complexity_score": 1,
+      "maintainability_index": 99.46,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./middleware/rate_limit.py": {
+      "file_path": "./middleware/rate_limit.py",
+      "quality_score": 100.0,
+      "complexity_score": 1,
+      "maintainability_index": 99.41,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./middleware/security.py": {
+      "file_path": "./middleware/security.py",
+      "quality_score": 66.45652173913044,
+      "complexity_score": 33,
+      "maintainability_index": 81.01,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./middleware/error_handling.py": {
+      "file_path": "./middleware/error_handling.py",
+      "quality_score": 100.0,
+      "complexity_score": 2,
+      "maintainability_index": 98.7,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./scripts/move_files.py": {
+      "file_path": "./scripts/move_files.py",
+      "quality_score": 100.0,
+      "complexity_score": 14,
+      "maintainability_index": 92.54,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./examples/enhanced_config.py": {
+      "file_path": "./examples/enhanced_config.py",
+      "quality_score": 100.0,
+      "complexity_score": 8,
+      "maintainability_index": 94.19,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./examples/demo.py": {
+      "file_path": "./examples/demo.py",
+      "quality_score": 100.0,
+      "complexity_score": 4,
+      "maintainability_index": 97.61,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./examples/api_blueprint_example.py": {
+      "file_path": "./examples/api_blueprint_example.py",
+      "quality_score": 79.6470588235294,
+      "complexity_score": 29,
+      "maintainability_index": 81.7,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'create_bulk_orders' (>50 lines)",
+        "Consider breaking down function 'list_orders' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./examples/app_factory.py": {
+      "file_path": "./examples/app_factory.py",
+      "quality_score": 100.0,
+      "complexity_score": 11,
+      "maintainability_index": 93.09,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./migrations/csv_import.py": {
+      "file_path": "./migrations/csv_import.py",
+      "quality_score": 98.0,
+      "complexity_score": 16,
+      "maintainability_index": 91.39,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./utils/api_timeout.py": {
+      "file_path": "./utils/api_timeout.py",
+      "quality_score": 100.0,
+      "complexity_score": 4,
+      "maintainability_index": 97.89,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./utils/logging_config.py": {
+      "file_path": "./utils/logging_config.py",
+      "quality_score": 64.21428571428571,
+      "complexity_score": 34,
+      "maintainability_index": 80.21,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'configure_logging' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./utils/logging_utils.py": {
+      "file_path": "./utils/logging_utils.py",
+      "quality_score": 100.0,
+      "complexity_score": 9,
+      "maintainability_index": 93.98,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./utils/env_validation.py": {
+      "file_path": "./utils/env_validation.py",
+      "quality_score": 100.0,
+      "complexity_score": 2,
+      "maintainability_index": 98.84,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./utils/__init__.py": {
+      "file_path": "./utils/__init__.py",
+      "quality_score": 100.0,
+      "complexity_score": 2,
+      "maintainability_index": 98.81,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./utils/input_validation.py": {
+      "file_path": "./utils/input_validation.py",
+      "quality_score": 100.0,
+      "complexity_score": 5,
+      "maintainability_index": 97.38,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./blueprints/intelligent_orders.py": {
+      "file_path": "./blueprints/intelligent_orders.py",
+      "quality_score": 100.0,
+      "complexity_score": 2,
+      "maintainability_index": 98.74,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./blueprints/order_input.py": {
+      "file_path": "./blueprints/order_input.py",
+      "quality_score": 40.5,
+      "complexity_score": 49,
+      "maintainability_index": 72.46,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'api_process_order' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./blueprints/inventory_management.py": {
+      "file_path": "./blueprints/inventory_management.py",
+      "quality_score": 100.0,
+      "complexity_score": 1,
+      "maintainability_index": 99.47,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./blueprints/csv_management.py": {
+      "file_path": "./blueprints/csv_management.py",
+      "quality_score": 70.05555555555556,
+      "complexity_score": 31,
+      "maintainability_index": 82.51,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'export_all_orders' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./blueprints/inventory.py": {
+      "file_path": "./blueprints/inventory.py",
+      "quality_score": 60.0,
+      "complexity_score": 40,
+      "maintainability_index": 76.39,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'get_inventory_summary' (>50 lines)",
+        "Consider breaking down function 'get_inventory_list' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./blueprints/__init__.py": {
+      "file_path": "./blueprints/__init__.py",
+      "quality_score": 100.0,
+      "complexity_score": 1,
+      "maintainability_index": 99.49,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./blueprints/dashboard.py": {
+      "file_path": "./blueprints/dashboard.py",
+      "quality_score": 90.0,
+      "complexity_score": 25,
+      "maintainability_index": 83.94,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'api_inventory_alerts' (>50 lines)",
+        "Consider breaking down function 'get_shipping_overview' (>50 lines)",
+        "Consider breaking down function 'get_inventory_distribution' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./blueprints/orders.py": {
+      "file_path": "./blueprints/orders.py",
+      "quality_score": 100.0,
+      "complexity_score": 19,
+      "maintainability_index": 89.18,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'create_order' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./backup_original_structure/routing.py": {
+      "file_path": "./backup_original_structure/routing.py",
+      "quality_score": 100.0,
+      "complexity_score": 12,
+      "maintainability_index": 93.08,
+      "security_issues": [
+        {
+          "type": "weak_random",
+          "severity": "medium",
+          "line": 81,
+          "description": "Use of weak random number generator",
+          "code_snippet": "return random.choice(warehouses) if warehouses else {}",
+          "recommendation": "Use secrets module for cryptographic purposes"
+        }
+      ],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./backup_original_structure/inventory_monitor.py": {
+      "file_path": "./backup_original_structure/inventory_monitor.py",
+      "quality_score": 46.0,
+      "complexity_score": 46,
+      "maintainability_index": 73.53,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function '_check_inventory_levels' (>50 lines)",
+        "Consider breaking down function 'get_inventory_summary' (>50 lines)",
+        "Consider breaking down function 'generate_reorder_suggestions' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./backup_original_structure/test_api_responses.py": {
+      "file_path": "./backup_original_structure/test_api_responses.py",
+      "quality_score": 100.0,
+      "complexity_score": 9,
+      "maintainability_index": 90.15,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./backup_original_structure/fedex_orders.py": {
+      "file_path": "./backup_original_structure/fedex_orders.py",
+      "quality_score": 100.0,
+      "complexity_score": 17,
+      "maintainability_index": 89.31,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function '__init__' (>50 lines)",
+        "Consider breaking down function 'create_fedex_shipment' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./backup_original_structure/test_api_integration.py": {
+      "file_path": "./backup_original_structure/test_api_integration.py",
+      "quality_score": 75.5,
+      "complexity_score": 32,
+      "maintainability_index": 80.05,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./backup_original_structure/demo.py": {
+      "file_path": "./backup_original_structure/demo.py",
+      "quality_score": 100.0,
+      "complexity_score": 4,
+      "maintainability_index": 97.61,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./backup_original_structure/database_utils.py": {
+      "file_path": "./backup_original_structure/database_utils.py",
+      "quality_score": 30.0,
+      "complexity_score": 55,
+      "maintainability_index": 69.4,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'migrate_warehouses_from_json' (>50 lines)",
+        "Consider breaking down function 'migrate_products_from_json' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./backup_original_structure/utils.py": {
+      "file_path": "./backup_original_structure/utils.py",
+      "quality_score": 86.0,
+      "complexity_score": 27,
+      "maintainability_index": 85.13,
+      "security_issues": [],
+      "performance_issues": [
+        {
+          "type": "string_concatenation",
+          "severity": "low",
+          "line": 127,
+          "description": "String concatenation in loop may be inefficient",
+          "code_snippet": "postal_code = postal_code[:-3] + \" \" + postal_code[-3:]",
+          "recommendation": "Consider using join() or f-strings for better performance"
+        },
+        {
+          "type": "string_concatenation",
+          "severity": "low",
+          "line": 133,
+          "description": "String concatenation in loop may be inefficient",
+          "code_snippet": "postal_code = postal_code[:3] + \" \" + postal_code[3:]",
+          "recommendation": "Consider using join() or f-strings for better performance"
+        },
+        {
+          "type": "string_concatenation",
+          "severity": "low",
+          "line": 138,
+          "description": "String concatenation in loop may be inefficient",
+          "code_snippet": "postal_code = postal_code[:3] + \" \" + postal_code[3:]",
+          "recommendation": "Consider using join() or f-strings for better performance"
+        }
+      ],
+      "suggestions": [
+        "Consider breaking down function 'parse_customer_input' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./backup_original_structure/app.py": {
+      "file_path": "./backup_original_structure/app.py",
+      "quality_score": 0.0,
+      "complexity_score": 93,
+      "maintainability_index": 47.41,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'create_order' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./backup_original_structure/test_api_keys.py": {
+      "file_path": "./backup_original_structure/test_api_keys.py",
+      "quality_score": 100.0,
+      "complexity_score": 1,
+      "maintainability_index": 100.0,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./backup_original_structure/advanced_product_sync.py": {
+      "file_path": "./backup_original_structure/advanced_product_sync.py",
+      "quality_score": 62.57142857142857,
+      "complexity_score": 38,
+      "maintainability_index": 77.54,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design",
+          "async_programming"
+        ]
+      }
+    },
+    "./backup_original_structure/run_tests.py": {
+      "file_path": "./backup_original_structure/run_tests.py",
+      "quality_score": 76.5,
+      "complexity_score": 31,
+      "maintainability_index": 81.92,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'main' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./backup_original_structure/config.py": {
+      "file_path": "./backup_original_structure/config.py",
+      "quality_score": 100.0,
+      "complexity_score": 2,
+      "maintainability_index": 98.75,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./backup_original_structure/validation.py": {
+      "file_path": "./backup_original_structure/validation.py",
+      "quality_score": 76.75,
+      "complexity_score": 31,
+      "maintainability_index": 83.06,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "medium",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./backup_original_structure/validate_setup.py": {
+      "file_path": "./backup_original_structure/validate_setup.py",
+      "quality_score": 100.0,
+      "complexity_score": 9,
+      "maintainability_index": 95.04,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "low",
+        "suggested_refactoring": [],
+        "ai_confidence": 0.8
+      }
+    },
+    "./backup_original_structure/veeqo_orders.py": {
+      "file_path": "./backup_original_structure/veeqo_orders.py",
+      "quality_score": 81.0909090909091,
+      "complexity_score": 29,
+      "maintainability_index": 83.16,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'create_veeqo_order' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./backup_original_structure/run_postman_tests.py": {
+      "file_path": "./backup_original_structure/run_postman_tests.py",
+      "quality_score": 32.63636363636364,
+      "complexity_score": 53,
+      "maintainability_index": 69.07,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'run_tests' (>50 lines)",
+        "Consider breaking down function '_generate_report' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8,
+        "patterns_detected": [
+          "object_oriented_design"
+        ]
+      }
+    },
+    "./backup_original_structure/models.py": {
+      "file_path": "./backup_original_structure/models.py",
+      "quality_score": 100.0,
+      "complexity_score": 11,
+      "maintainability_index": 91.03,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [
+        "Consider breaking down function 'create_sample_data' (>50 lines)"
+      ],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    },
+    "./backup_original_structure/test_config.py": {
+      "file_path": "./backup_original_structure/test_config.py",
+      "quality_score": 100.0,
+      "complexity_score": 4,
+      "maintainability_index": 95.01,
+      "security_issues": [],
+      "performance_issues": [],
+      "suggestions": [],
+      "ai_insights": {
+        "code_style": "pythonic",
+        "estimated_complexity": "high",
+        "suggested_refactoring": [
+          "Break into smaller modules"
+        ],
+        "ai_confidence": 0.8
+      }
+    }
+  },
+  "security_summary": {
+    "total_issues": 16,
+    "by_severity": {
+      "medium": 10,
+      "high": 1,
+      "critical": 5
+    },
+    "by_type": {
+      "weak_random": 10,
+      "command_injection": 1,
+      "hardcoded_secret": 5
+    },
+    "risk_level": "high"
+  },
+  "performance_summary": {
+    "total_issues": 4,
+    "by_type": {
+      "global_variable": 1,
+      "string_concatenation": 3
+    },
+    "performance_rating": "good"
+  },
+  "ai_recommendations": [
+    "\ud83d\udd12 Address 16 security issues found in the codebase",
+    "\ud83e\udde9 Consider breaking down complex functions to improve maintainability",
+    "\ud83d\udce6 Consider organizing code into packages for better structure"
+  ]
+}

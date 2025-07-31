@@ -1,0 +1,73 @@
+# Production-optimized requirements for Shipping GUI
+# Core Flask dependencies with pinned versions for stability
+
+# Flask Core
+Flask==3.1.1
+Flask-SQLAlchemy==3.1.1
+Flask-CORS==4.0.0
+Flask-WTF==1.2.2
+Flask-Migrate==4.1.0
+Flask-Limiter==3.12.0
+
+# Web Server & WSGI
+gunicorn==23.0.0
+gevent==24.11.1
+
+# Database
+SQLAlchemy==2.0.36
+psycopg2-binary==2.9.10
+alembic==1.14.0
+
+# Redis & Caching
+redis==5.2.1
+
+# HTTP Requests
+requests==2.32.4
+urllib3==2.2.3
+
+# Environment & Configuration  
+python-dotenv==1.1.1
+
+# Background Tasks
+celery==5.5.3
+
+# Security & Authentication
+PyJWT==2.10.1
+cryptography==44.0.0
+bcrypt==4.2.1
+
+# Logging & Monitoring
+structlog==25.4.0
+
+# Data Processing
+marshmallow==3.23.2
+
+# Development & Testing (only install in non-production)
+pytest==8.4.1; python_version >= "3.8" and extra == "dev"
+pytest-flask==1.3.0; python_version >= "3.8" and extra == "dev"
+pytest-cov==6.0.0; python_version >= "3.8" and extra == "dev"
+pytest-asyncio==1.1.0; python_version >= "3.8" and extra == "dev"
+
+# Code Quality (development only)
+flake8==7.1.1; python_version >= "3.8" and extra == "dev"
+black==24.10.0; python_version >= "3.8" and extra == "dev"
+isort==5.13.2; python_version >= "3.8" and extra == "dev"
+
+# Security Scanning (development only)
+bandit==1.8.0; python_version >= "3.8" and extra == "dev"
+safety==3.2.11; python_version >= "3.8" and extra == "dev"
+
+# Optional AI/ML features (only if using advanced customer parsing)
+torch>=2.0.0,<3.0.0; extra == "ai"
+transformers>=4.30.0,<5.0.0; extra == "ai"
+tokenizers>=0.13.0,<1.0.0; extra == "ai"
+
+# Optional async support
+nest_asyncio>=1.6.0; extra == "async"
+
+# Optional data analysis features
+pandas>=2.0.0,<3.0.0; extra == "analytics"
+numpy>=1.24.0,<2.0.0; extra == "analytics"
+
+# Task scheduling
+schedule>=1.2.0

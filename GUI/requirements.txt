@@ -1,0 +1,5 @@
+# GUI Components Requirements
+# Python Tkinter applications for management interfaces
+
+requests>=2.28.0
+# tkinter is built-in with Python, no need to install

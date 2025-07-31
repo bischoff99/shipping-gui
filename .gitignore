@@ -1,50 +1,309 @@
-# Python
+# MCP-Enhanced .gitignore for Shipping GUI Project
+# Generated with intelligent analysis for optimal version control
+
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
+# C extensions
 *.so
+
+# Distribution / packaging
 .Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.staging
+.venv
 env/
 venv/
-.venv/
 ENV/
 env.bak/
 venv.bak/
 
-# Flask
-instance/
-.webassets-cache
+# Spyder project settings
+.spyderproject
+.spyproject
 
-# Environment variables
-.env
-.env.local
-.env.*.local
+# Rope project settings
+.ropeproject
 
-# IDE
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# IDE and Editor files
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
-
-# OS
 .DS_Store
 Thumbs.db
 
-# Logs
+# Project-specific ignores
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+shipping_automation.db
+
+# Log files
 *.log
 logs/
+*.log.*
 
-# Database
-*.db
-*.sqlite3
+# Temporary files
+tmp/
+temp/
+.tmp/
 
-# Testing
-.coverage
+# Cache files
+.cache/
+*.cache
+
+# Configuration files with secrets (keep .example versions)
+.env.production.local
+.env.development.local
+config/secrets.py
+secrets.json
+
+# API Keys and sensitive data
+api_keys.txt
+*_secret.txt
+*.pem
+*.key
+*.crt
+
+# Application-specific
+# Backup files
+backup_*/
+*.backup
+*.bak
+
+# CSV exports and data files
+exports/
+data/exports/
+*.csv
+!data/sample_data.csv
+
+# MCP debug files
+mcp_debug_session.txt
+debug_*.log
+
+# Performance profiles
+*.prof
+*.cpuprofile
+
+# Docker
+.dockerignore
+
+# Kubernetes secrets
+k8s/secrets/
+*.secret.yaml
+
+# Node modules (if any frontend tools)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+
+# Compiled assets
+/static/dist/
+/static/build/
+
+# Production files
+/build/
+/dist/
+
+# Debug dumps
+debug_dump_*
+core.*
+
+# AI/ML model files (unless needed)
+*.pkl
+*.joblib
+*.h5
+*.pb
+
+# Large data files
+*.parquet
+*.feather
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# pytest
 .pytest_cache/
-htmlcov/
+test-results/
 
-# Distribution / packaging
-dist/
-build/
-*.egg-info/
+# Coverage reports
+htmlcov/
+.coverage
+coverage.json
+
+# Linting
+.flake8
+.pylintrc
+
+# Security scan results
+bandit.json
+safety.json
+
+# Load testing results
+load_test_results/
+*.jmx
+*.jtl
+
+# Monitoring and metrics
+metrics/
+monitoring/data/
+
+# Backups
+*.sql.gz
+*.dump
+
+# Editor backup files
+*~
+*.tmp
+*.bak
+*.swp
+
+# macOS
+.AppleDouble
+.LSOverride
+
+# Windows
+desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+.fuse_hidden*
+.directory
+.Trash-*
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# Project specific temp files
+temp_*
+scratch.*
+test_output/
+
+# Claude Agent Orchestrator (keep configuration, ignore runtime data)
+.claude/metrics.json
+.claude/commit-log.txt
+.claude/*.tmp
+.claude/.cache/

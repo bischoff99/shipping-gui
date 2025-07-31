@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FedEx CSV Export - Shipping GUI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="mb-4">
+                    <i class="fas fa-truck text-primary"></i>
+                    FedEx Orders CSV Export
+                </h1>
+                
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Export Form -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-download"></i>
+                            Export Options
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            <div class="mb-3">
+                                <label class="form-label">Export Options</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="export_type" id="recent" value="recent" checked>
+                                    <label class="form-check-label" for="recent">
+                                        Export Recent Orders
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="export_type" id="all" value="all">
+                                    <label class="form-check-label" for="all">
+                                        Export All FedEx Orders
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3" id="days-selection">
+                                <label for="days_back" class="form-label">Days to Look Back</label>
+                                <select class="form-select" name="days_back" id="days_back">
+                                    <option value="7">Last 7 days</option>
+                                    <option value="14">Last 14 days</option>
+                                    <option value="30" selected>Last 30 days</option>
+                                    <option value="60">Last 60 days</option>
+                                    <option value="90">Last 90 days</option>
+                                </select>
+                            </div>
+
+                            <input type="hidden" name="include_all" id="include_all" value="false">
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-download"></i>
+                                    Download CSV
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- CSV Format Info -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-info-circle"></i>
+                            CSV Format Information
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p>The exported CSV file will contain the following columns:</p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li><strong>order_id</strong> - Internal order ID</li>
+                                    <li><strong>easyship_shipment_id</strong> - Easyship shipment ID</li>
+                                    <li><strong>tracking_number</strong> - FedEx tracking number</li>
+                                    <li><strong>customer_name</strong> - Customer full name</li>
+                                    <li><strong>customer_email</strong> - Customer email</li>
+                                    <li><strong>customer_phone</strong> - Customer phone</li>
+                                    <li><strong>address_line_1</strong> - Primary address</li>
+                                    <li><strong>address_line_2</strong> - Secondary address</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li><strong>city</strong> - Destination city</li>
+                                    <li><strong>state</strong> - Destination state/region</li>
+                                    <li><strong>postal_code</strong> - Postal/ZIP code</li>
+                                    <li><strong>country</strong> - Country code</li>
+                                    <li><strong>carrier</strong> - Shipping carrier (FEDEX)</li>
+                                    <li><strong>service_type</strong> - FedEx service type</li>
+                                    <li><strong>order_status</strong> - Order status</li>
+                                    <li><strong>created_date</strong> - Order creation date</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Sidebar -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-bar"></i>
+                            FedEx Orders Summary
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% if summary %}
+                            <div class="text-center mb-3">
+                                <h2 class="text-primary">{{ summary.total_orders }}</h2>
+                                <p class="text-muted">Total FedEx Orders</p>
+                            </div>
+
+                            <hr>
+
+                            <div class="mb-3">
+                                <h6>Financial Summary</h6>
+                                <p class="mb-1">Total Value: <strong>${{ "%.2f"|format(summary.total_value) }}</strong></p>
+                                <p class="mb-1">Total Cost: <strong>${{ "%.2f"|format(summary.total_cost) }}</strong></p>
+                            </div>
+
+                            <hr>
+
+                            {% if summary.status_breakdown %}
+                                <div class="mb-3">
+                                    <h6>Status Breakdown</h6>
+                                    {% for status, count in summary.status_breakdown.items() %}
+                                        <div class="d-flex justify-content-between">
+                                            <span class="text-capitalize">{{ status }}:</span>
+                                            <span class="badge bg-secondary">{{ count }}</span>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <hr>
+                            {% endif %}
+
+                            {% if summary.country_breakdown %}
+                                <div class="mb-3">
+                                    <h6>Countries</h6>
+                                    {% for country, count in summary.country_breakdown.items() %}
+                                        <div class="d-flex justify-content-between">
+                                            <span>{{ country }}:</span>
+                                            <span class="badge bg-info">{{ count }}</span>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <hr>
+                            {% endif %}
+
+                            {% if summary.date_range.earliest %}
+                                <div class="mb-3">
+                                    <h6>Date Range</h6>
+                                    <p class="small text-muted mb-0">
+                                        Earliest: {{ summary.date_range.earliest[:10] }}<br>
+                                        Latest: {{ summary.date_range.latest[:10] }}
+                                    </p>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="text-center">
+                                <i class="fas fa-exclamation-triangle text-warning fa-3x mb-3"></i>
+                                <p class="text-muted">No FedEx orders found in the database.</p>
+                                <a href="{{ url_for('csv_management.create_test_data') }}" class="btn btn-outline-info btn-sm">
+                                    Create Test Data
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="fas fa-compass"></i>
+                            Navigation
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2">
+                            <a href="{{ url_for('csv_management.export_dashboard') }}" class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-arrow-left"></i>
+                                Back to Dashboard
+                            </a>
+                            <a href="{{ url_for('csv_management.export_all_orders') }}" class="btn btn-outline-success btn-sm">
+                                <i class="fas fa-boxes"></i>
+                                Export All Orders
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle days selection based on export type
+        document.addEventListener('DOMContentLoaded', function() {
+            const recentRadio = document.getElementById('recent');
+            const allRadio = document.getElementById('all');
+            const daysSelection = document.getElementById('days-selection');
+            const includeAllInput = document.getElementById('include_all');
+
+            function toggleDaysSelection() {
+                if (allRadio.checked) {
+                    daysSelection.style.display = 'none';
+                    includeAllInput.value = 'true';
+                } else {
+                    daysSelection.style.display = 'block';
+                    includeAllInput.value = 'false';
+                }
+            }
+
+            recentRadio.addEventListener('change', toggleDaysSelection);
+            allRadio.addEventListener('change', toggleDaysSelection);
+
+            // Initial state
+            toggleDaysSelection();
+        });
+    </script>
+</body>
+</html>

@@ -13,6 +13,63 @@
                 "isDefault": true
             },
             "problemMatcher": []
+        },
+        {
+            "label": "Run Gunicorn Production",
+            "type": "shell",
+            "command": "gunicorn",
+            "args": [
+                "-c",
+                "gunicorn_config.py",
+                "app:app"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run All Tests",
+            "type": "shell",
+            "command": "pytest",
+            "args": [
+                "tests"
+            ],
+            "group": "test",
+            "problemMatcher": []
+        },
+        {
+            "label": "Docker Build",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "build",
+                "-t",
+                "shipping-gui",
+                "."
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Docker Compose Up",
+            "type": "shell",
+            "command": "docker-compose",
+            "args": [
+                "up",
+                "--build"
+            ],
+            "isBackground": true,
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run API Tests",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "run_postman_tests.py"
+            ],
+            "group": "test",
+            "problemMatcher": []
         }
     ]
 }

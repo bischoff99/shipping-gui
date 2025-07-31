@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: shipping-gui
+  labels:
+    name: shipping-gui
+    environment: staging

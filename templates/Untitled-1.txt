@@ -1,3 +1,0 @@
-# Download ngrok and run:
-ngrok http 5001
-# You'll get a public URL instantly!

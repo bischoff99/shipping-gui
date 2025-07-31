@@ -69,6 +69,64 @@ John Doe +1234567890 john@email.com 123 Main St Boston MA 02101 US
 - Use the "Sync Data" feature to refresh products and warehouses from both platforms
 - Data is cached locally for faster order processing
 
+## Project Structure
+
+The project is now organized into a clean, modular directory structure:
+
+```
+SHIPPING_GUI/
+├── 📁 api/                      # API integrations
+│   ├── easyship_api.py          # Easyship platform integration
+│   └── veeqo_api.py             # Veeqo platform integration
+├── 📁 blueprints/               # Flask route blueprints
+│   ├── dashboard.py             # Dashboard routes
+│   ├── orders.py                # Order management routes
+│   └── inventory.py             # Inventory management routes
+├── 📁 config/                   # Configuration files
+│   ├── celeryconfig.py          # Celery task configuration
+│   └── logging_config.py        # Logging setup
+├── 📁 data/                     # Data files and exports
+│   ├── products.json            # Product catalog cache
+│   ├── warehouses.json          # Warehouse data cache
+│   └── postman_*.json           # API testing collections
+├── 📁 deployment/               # Deployment configurations
+│   ├── Dockerfile               # Container configuration
+│   ├── docker-compose.yml       # Multi-service setup
+│   └── deploy_production.sh     # Production deployment script
+├── 📁 docs/                     # Project documentation
+│   ├── IMPLEMENTATION_ROADMAP.md
+│   ├── GUI_INTEGRATION_README.md
+│   └── UNIFIED_SYSTEM_DOCUMENTATION.md
+├── 📁 GUI/                      # Desktop GUI components
+│   ├── unified_warehouse_system.py
+│   └── integration_launcher.py
+├── 📁 logs/                     # Application logs
+├── 📁 middleware/               # Flask middleware
+│   ├── auth.py                  # Authentication
+│   ├── error_handling.py        # Error handling
+│   └── rate_limit.py            # Rate limiting
+├── 📁 services/                 # Business logic services
+│   ├── inventory_monitor.py     # Real-time inventory tracking
+│   ├── order_processor.py       # Order processing logic
+│   └── csv_processor.py         # CSV data processing
+├── 📁 templates/                # Jinja2 HTML templates
+│   ├── unified_dashboard.html   # Main dashboard
+│   ├── create_order.html        # Order creation form
+│   └── inventory/               # Inventory-specific templates
+├── 📁 tests/                    # Test suite
+│   ├── test_api_integration.py  # API integration tests
+│   ├── test_app.py              # Application tests
+│   └── csv/                     # CSV processing tests
+├── 📁 tools/                    # Utility scripts
+│   ├── gui_launcher.py          # Desktop launcher
+│   ├── validate_setup.py        # Environment validation
+│   └── init_db.py               # Database initialization
+└── 📁 utils/                    # Utility modules
+    ├── input_validation.py      # Input validation helpers
+    ├── logging_utils.py         # Logging utilities
+    └── api_timeout.py           # API timeout handling
+```
+
 ## Architecture
 
 ### Backend Modules
@@ -117,17 +175,25 @@ John Doe +1234567890 john@email.com 123 Main St Boston MA 02101 US
 ## Development
 
 ### Reused Components
-This system integrates the best logic from your existing scripts:
-- Customer parsing from `test_jojet_gui_fixed.py` and `enhanced_routing_gui.py`
-- API integration from `working_easyship_order.py` and `advanced_web_gui.py`
-- Routing logic from `carrier_based_routing.py` and related scripts
-- Validation patterns from your warehouse and order management scripts
+This system integrates the best logic from legacy scripts (now in `backup_original_structure/`):
+- Customer parsing logic from enhanced routing components
+- API integration from proven working implementations
+- Routing logic from carrier-based routing systems
+- Validation patterns from warehouse and order management scripts
 
 ### Extending the System
-- Add new carriers in `routing.py`
-- Extend validation rules in `validation.py`
-- Add new API endpoints in the respective API modules
-- Customize UI templates for branding or additional features
+- **Add new carriers**: Update `routing.py` and add configuration
+- **Extend validation**: Modify `validation.py` and `utils/input_validation.py`
+- **Add API endpoints**: Create new modules in `api/` directory
+- **Add new services**: Create business logic in `services/` directory
+- **Customize UI**: Modify templates in `templates/` directory
+- **Add middleware**: Create new middleware in `middleware/` directory
+
+### Development Tools
+- **Database initialization**: `tools/init_db.py`
+- **Environment validation**: `tools/validate_setup.py`
+- **GUI launcher**: `tools/gui_launcher.py`
+- **Production runner**: `tools/run_production.py`
 
 ## Troubleshooting
 

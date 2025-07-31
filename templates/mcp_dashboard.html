@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP Integration Dashboard - SHIPPING_GUI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .card h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .health-summary {
+            text-align: center;
+        }
+
+        .health-status {
+            font-size: 3rem;
+            margin: 15px 0;
+        }
+
+        .health-status.healthy { color: #10b981; }
+        .health-status.degraded { color: #f59e0b; }
+        .health-status.down { color: #ef4444; }
+
+        .health-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .server-list {
+            list-style: none;
+        }
+
+        .server-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin: 8px 0;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #e5e7eb;
+        }
+
+        .server-item.connected {
+            border-left-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .server-item.disconnected {
+            border-left-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .server-status {
+            font-size: 1.2rem;
+            margin-right: 15px;
+            width: 20px;
+        }
+
+        .server-info {
+            flex: 1;
+        }
+
+        .server-name {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .server-command {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+        .server-error {
+            font-size: 0.8rem;
+            color: #dc2626;
+            margin-top: 4px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a67d8;
+        }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+
+        .debug-section {
+            margin-top: 30px;
+        }
+
+        .debug-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .debug-card {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 20px;
+            color: white;
+        }
+
+        .debug-card h4 {
+            margin-bottom: 10px;
+            color: #f1f5f9;
+        }
+
+        .debug-card p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: white;
+            opacity: 0.7;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #6b7280;
+            margin: 20px 0;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 50%;
+            border-top-color: #667eea;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .alert-info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+
+        .alert-warning {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fcd34d;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 MCP Integration Dashboard</h1>
+            <p>Real-time status of Model Context Protocol servers</p>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Loading MCP server status...</p>
+        </div>
+
+        <div class="dashboard-grid" id="dashboard">
+            <!-- Health Summary Card -->
+            <div class="card">
+                <h3>🏥 System Health</h3>
+                <div class="health-summary">
+                    <div class="health-status" id="healthStatus">Loading...</div>
+                    <div class="health-stats">
+                        <div class="stat">
+                            <div class="stat-value" id="connectedCount">-</div>
+                            <div class="stat-label">Connected</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="totalCount">-</div>
+                            <div class="stat-label">Total</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value" id="healthPercentage">-</div>
+                            <div class="stat-label">Health %</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MCP Servers Card -->
+            <div class="card">
+                <h3>🖥️ MCP Servers</h3>
+                <ul class="server-list" id="serverList">
+                    <li>Loading server information...</li>
+                </ul>
+                <div class="actions">
+                    <button class="btn btn-primary" onclick="refreshStatus()">🔄 Refresh</button>
+                    <button class="btn btn-secondary" onclick="toggleAutoRefresh()">⚡ Auto-refresh</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Features Section -->
+        <div class="card">
+            <h3>🤖 AI-Enhanced Features</h3>
+            <div id="aiFeatures">
+                <div class="alert alert-info">
+                    <strong>Available AI Features:</strong>
+                    <ul style="margin-top: 10px; padding-left: 20px;">
+                        <li>Intelligent customer data parsing</li>
+                        <li>AI-powered route optimization</li>
+                        <li>Smart error detection and suggestions</li>
+                        <li>Performance insights and analytics</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Debug Controls -->
+        <div class="debug-section">
+            <div class="card">
+                <h3>🔍 Development Tools</h3>
+                <div class="debug-controls">
+                    <div class="debug-card">
+                        <h4>Python Debugging</h4>
+                        <p>Interactive debugging with mcp-pdb</p>
+                        <button class="btn btn-primary" onclick="startDebugSession()">Start Debug Session</button>
+                    </div>
+                    <div class="debug-card">
+                        <h4>AI Suggestions</h4>
+                        <p>Get AI-powered development insights</p>
+                        <button class="btn btn-primary" onclick="getAISuggestions()">Get Suggestions</button>
+                    </div>
+                    <div class="debug-card">
+                        <h4>Create Development Plan</h4>
+                        <p>Generate step-by-step development plans</p>
+                        <button class="btn btn-primary" onclick="createDevPlan()">Create Plan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="last-updated" id="lastUpdated">
+            Last updated: Loading...
+        </div>
+    </div>
+
+    <script>
+        let autoRefreshInterval;
+        let autoRefreshEnabled = false;
+
+        // Load initial data
+        document.addEventListener('DOMContentLoaded', function() {
+            loadMCPStatus();
+        });
+
+        async function loadMCPStatus() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('dashboard').style.opacity = '0.5';
+
+            try {
+                const response = await fetch('/api/mcp/servers');
+                const data = await response.json();
+
+                updateHealthSummary(data.summary);
+                updateServerList(data.servers);
+                updateLastUpdated();
+
+            } catch (error) {
+                console.error('Failed to load MCP status:', error);
+                showError('Failed to load MCP server status. Please check your connection.');
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('dashboard').style.opacity = '1';
+            }
+        }
+
+        function updateHealthSummary(summary) {
+            const statusElement = document.getElementById('healthStatus');
+            const connectedElement = document.getElementById('connectedCount');
+            const totalElement = document.getElementById('totalCount');
+            const percentageElement = document.getElementById('healthPercentage');
+
+            // Update status
+            const statusMap = {
+                'healthy': { emoji: '✅', text: 'Healthy', class: 'healthy' },
+                'degraded': { emoji: '⚠️', text: 'Degraded', class: 'degraded' },
+                'down': { emoji: '❌', text: 'Down', class: 'down' }
+            };
+
+            const status = statusMap[summary.status] || statusMap['down'];
+            statusElement.innerHTML = `${status.emoji}<br><small>${status.text}</small>`;
+            statusElement.className = `health-status ${status.class}`;
+
+            // Update stats
+            connectedElement.textContent = summary.connected_servers || 0;
+            totalElement.textContent = summary.total_servers || 0;
+            percentageElement.textContent = Math.round(summary.health_percentage || 0) + '%';
+        }
+
+        function updateServerList(servers) {
+            const serverList = document.getElementById('serverList');
+            serverList.innerHTML = '';
+
+            for (const [name, details] of Object.entries(servers)) {
+                const li = document.createElement('li');
+                li.className = `server-item ${details.connected ? 'connected' : 'disconnected'}`;
+
+                const statusIcon = details.connected ? '✅' : '❌';
+                
+                li.innerHTML = `
+                    <div class="server-status">${statusIcon}</div>
+                    <div class="server-info">
+                        <div class="server-name">${name}</div>
+                        <div class="server-command">${details.command}</div>
+                        ${details.error ? `<div class="server-error">Error: ${details.error}</div>` : ''}
+                    </div>
+                `;
+
+                serverList.appendChild(li);
+            }
+        }
+
+        function updateLastUpdated() {
+            const now = new Date();
+            document.getElementById('lastUpdated').textContent = 
+                `Last updated: ${now.toLocaleTimeString()}`;
+        }
+
+        function refreshStatus() {
+            loadMCPStatus();
+        }
+
+        function toggleAutoRefresh() {
+            if (autoRefreshEnabled) {
+                clearInterval(autoRefreshInterval);
+                autoRefreshEnabled = false;
+                document.querySelector('[onclick="toggleAutoRefresh()"]').textContent = '⚡ Auto-refresh';
+            } else {
+                autoRefreshInterval = setInterval(loadMCPStatus, 10000); // 10 seconds
+                autoRefreshEnabled = true;
+                document.querySelector('[onclick="toggleAutoRefresh()"]').textContent = '⏹️ Stop Auto-refresh';
+            }
+        }
+
+        async function startDebugSession() {
+            try {
+                const response = await fetch('/api/mcp/debug', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        script_path: 'app.py',
+                        breakpoint_line: 1 
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.error) {
+                    showError(`Debug session failed: ${result.error}`);
+                } else {
+                    showInfo('Debug session started successfully!');
+                }
+            } catch (error) {
+                showError('Failed to start debug session');
+            }
+        }
+
+        async function getAISuggestions() {
+            try {
+                const response = await fetch('/api/mcp/ai-suggestions', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        context: { 
+                            component: 'shipping_gui',
+                            task: 'optimization' 
+                        } 
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.error) {
+                    showError(`AI suggestions failed: ${result.error}`);
+                } else {
+                    showInfo(`AI Suggestions: ${result.suggestions ? result.suggestions.join('; ') : 'No suggestions available'}`);
+                }
+            } catch (error) {
+                showError('Failed to get AI suggestions');
+            }
+        }
+
+        async function createDevPlan() {
+            const task = prompt('Enter task description for development plan:');
+            if (!task) return;
+
+            try {
+                const response = await fetch('/api/mcp/create-plan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ task_description: task })
+                });
+                
+                const result = await response.json();
+                
+                if (result.error) {
+                    showError(`Plan creation failed: ${result.error}`);
+                } else {
+                    const steps = result.steps ? result.steps.join('\n• ') : 'No steps generated';
+                    showInfo(`Development Plan:\n• ${steps}`);
+                }
+            } catch (error) {
+                showError('Failed to create development plan');
+            }
+        }
+
+        function showError(message) {
+            showAlert(message, 'alert-error');
+        }
+
+        function showInfo(message) {
+            showAlert(message, 'alert-info');
+        }
+
+        function showAlert(message, type) {
+            const alert = document.createElement('div');
+            alert.className = `alert ${type}`;
+            alert.textContent = message;
+            
+            document.querySelector('.container').insertBefore(alert, document.querySelector('.dashboard-grid'));
+            
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

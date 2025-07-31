@@ -1,0 +1,249 @@
+{
+  "version": "1.0.0",
+  "project": "unified-order-warehouse-management",
+  "agents": {
+    "backend-architect": {
+      "file": "backend-architect.md",
+      "specialty": "Flask architecture, API integration, database optimization",
+      "triggers": [
+        "app.py",
+        "routing.py", 
+        "validation.py",
+        "api/*.py",
+        "models.py",
+        "database_utils.py",
+        "blueprints/*.py"
+      ],
+      "keywords": [
+        "flask",
+        "api",
+        "database",
+        "sqlalchemy",
+        "routing",
+        "performance",
+        "integration",
+        "veeqo",
+        "easyship"
+      ],
+      "priority": "high",
+      "active": true
+    },
+    "frontend-expert": {
+      "file": "frontend-expert.md", 
+      "specialty": "UI/UX, templates, JavaScript, responsive design",
+      "triggers": [
+        "templates/*.html",
+        "static/*.css",
+        "static/*.js",
+        "blueprints/*dashboard*.py",
+        "blueprints/*orders*.py"
+      ],
+      "keywords": [
+        "template",
+        "jinja2",
+        "html",
+        "css",
+        "javascript",
+        "ajax",
+        "ui",
+        "ux",
+        "responsive",
+        "dashboard"
+      ],
+      "priority": "high",
+      "active": true
+    },
+    "test-automator": {
+      "file": "test-automator.md",
+      "specialty": "Comprehensive testing, pytest, mocking, CI/CD",
+      "triggers": [
+        "tests/*.py",
+        "conftest.py",
+        "test_*.py",
+        "*_test.py"
+      ],
+      "keywords": [
+        "test",
+        "pytest",
+        "mock",
+        "coverage",
+        "integration",
+        "unit",
+        "e2e",
+        "ci",
+        "cd",
+        "automation"
+      ],
+      "priority": "high",
+      "active": true
+    },
+    "code-reviewer": {
+      "file": "code-reviewer.md",
+      "specialty": "Code quality, security, performance, maintainability",
+      "triggers": [
+        "*.py",
+        "requirements.txt",
+        "config.py",
+        ".env*"
+      ],
+      "keywords": [
+        "review",
+        "quality",
+        "security",
+        "performance",
+        "pep8",
+        "lint",
+        "refactor",
+        "optimize",
+        "maintain"
+      ],
+      "priority": "medium",
+      "active": true
+    },
+    "documentation-specialist": {
+      "file": "documentation-specialist.md",
+      "specialty": "Technical documentation, user guides, API docs",
+      "triggers": [
+        "README.md",
+        "CLAUDE.md", 
+        "docs/*.md",
+        "*.md"
+      ],
+      "keywords": [
+        "documentation",
+        "readme",
+        "guide",
+        "api",
+        "docs",
+        "manual",
+        "help",
+        "tutorial",
+        "reference"
+      ],
+      "priority": "medium",
+      "active": true
+    },
+    "api-integration-specialist": {
+      "file": "api-integration-specialist.md",
+      "specialty": "External API integrations, Veeqo/Easyship expertise",
+      "triggers": [
+        "api/*.py",
+        "*_api.py",
+        "api_*.py"
+      ],
+      "keywords": [
+        "veeqo",
+        "easyship",
+        "api",
+        "integration",
+        "webhook",
+        "rate limit",
+        "authentication",
+        "external"
+      ],
+      "priority": "high",
+      "active": true
+    },
+    "performance-optimizer": {
+      "file": "performance-optimizer.md",
+      "specialty": "Performance analysis, optimization, scalability",
+      "triggers": [
+        "app.py",
+        "gunicorn_config.py",
+        "config.py",
+        "requirements.txt"
+      ],
+      "keywords": [
+        "performance",
+        "optimization",
+        "scalability",
+        "bottleneck",
+        "profiling",
+        "cache",
+        "database",
+        "memory"
+      ],
+      "priority": "medium",
+      "active": true
+    },
+    "security-auditor": {
+      "file": "security-auditor.md",
+      "specialty": "Security assessment, vulnerability analysis, compliance",
+      "triggers": [
+        "app.py",
+        "config.py",
+        ".env*",
+        "templates/*.html"
+      ],
+      "keywords": [
+        "security",
+        "vulnerability",
+        "authentication",
+        "authorization",
+        "csrf",
+        "xss",
+        "injection",
+        "encryption"
+      ],
+      "priority": "high",
+      "active": true
+    }
+  },
+  "orchestrator": {
+    "file": "orchestrator.md",
+    "collaboration_rules": {
+      "backend_frontend": "API endpoints and data structures coordination",
+      "backend_testing": "Testable architecture and mock interface design", 
+      "backend_api": "External service integration patterns and error handling",
+      "security_all": "Security validation for all implementations",
+      "performance_backend": "Database and API optimization strategies",
+      "code_review_all": "Quality validation for all implementations",
+      "documentation_all": "Technical documentation for all changes"
+    },
+    "activation_protocols": {
+      "automatic": true,
+      "manual": true,
+      "trigger_based": true,
+      "collaborative": true
+    },
+    "workflow_stages": [
+      "planning",
+      "implementation", 
+      "testing",
+      "review",
+      "documentation",
+      "deployment"
+    ]
+  },
+  "project_context": {
+    "framework": "Flask",
+    "database": "SQLAlchemy (SQLite/PostgreSQL)",
+    "external_apis": ["Veeqo", "Easyship"],
+    "deployment": "Docker/Gunicorn",
+    "testing": "Pytest",
+    "frontend": "Jinja2/HTML/CSS/JavaScript",
+    "monitoring": "Custom metrics and logging"
+  },
+  "quality_standards": {
+    "code_style": "PEP 8 with Black (88 chars)",
+    "test_coverage": ">90%",
+    "documentation": "Comprehensive with examples",
+    "security": "OWASP guidelines",
+    "performance": "Sub-second response times",
+    "api_integration": "Circuit breaker patterns and retry logic"
+  },
+  "monitoring": {
+    "performance": true,
+    "security": true,
+    "quality": true,
+    "coverage": true,
+    "api_health": true,
+    "agent_effectiveness": true
+  },
+  "productivity_tools": {
+    "aliases": "Bash aliases for quick agent activation",
+    "git_hooks": "Pre/post-commit agent integration",
+    "monitoring": "Performance and effectiveness tracking",
+    "validation": "Agent configuration and behavior validation"
+  }
+}

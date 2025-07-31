@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: shipping-gui-config
+  namespace: shipping-gui
+data:
+  FLASK_ENV: "staging"
+  LOG_LEVEL: "INFO"
+  LOG_TO_STDOUT: "true"
+  GUNICORN_WORKERS: "4"
+  METRICS_ENABLED: "true"
+  HEALTH_CHECK_ENABLED: "true"
+  RATELIMIT_DEFAULT: "100 per hour"
+  API_TIMEOUT: "30"
+  API_MAX_RETRIES: "3"
+  API_BACKOFF_FACTOR: "0.3"
