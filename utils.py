@@ -88,9 +88,12 @@ def format_phone_number(phone: str) -> str:
     if cleaned.startswith('00'):
         cleaned = '+' + cleaned[2:]
     
-    # If it doesn't start with + and is longer than 10 digits, add +
-    if not cleaned.startswith('+') and len(cleaned) > 10:
-        cleaned = '+' + cleaned
+    # Add country code if missing
+    if not cleaned.startswith('+'):
+        if len(cleaned) == 10:
+            cleaned = '+1' + cleaned
+        elif len(cleaned) > 10:
+            cleaned = '+' + cleaned
     
     return cleaned
 
