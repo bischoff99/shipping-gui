@@ -64,7 +64,7 @@ jobs:
       continue-on-error: true
     
     - name: 📊 Upload Security Reports
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: security-reports
@@ -194,7 +194,7 @@ jobs:
         locust --headless --host=http://localhost:5000 -u 10 -r 2 -t 60s --html=load_test_report.html
     
     - name: 📊 Upload Performance Reports
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: performance-reports
         path: load_test_report.html
