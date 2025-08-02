@@ -66,19 +66,14 @@ class MCPOrderProcessor:
                 )
             except requests.exceptions.HTTPError as e:
                 self.logger.error(
-                    f"HTTP error on {url}: {e} - {
-                        getattr(
-                            e.response,
-                            'text',
-                            '')}"
+                    f"HTTP error on {url}: {e} - {getattr(e.response, 'text', '')}"
                 )
                 break  # Don't retry on HTTP errors
             except Exception as e:
                 self.logger.error(f"Unexpected error on {url}: {e}")
             time.sleep(2**attempt)
         self.logger.error(
-            f"Failed to POST to {url} after {
-                self.max_retries} attempts."
+            f"Failed to POST to {url} after {self.max_retries} attempts."
         )
         return None
 
