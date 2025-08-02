@@ -156,11 +156,6 @@ def create_platform_order(routing_decision, customer_data, products):
                 routing_decision.carrier,
             )
     return None
-        flash(f"Error processing order: {str(e)}", "error")
-        return _render_create_order()
-    except Exception as e:
-        flash(f"Unexpected error processing order: {str(e)}", "error")
-        return _render_create_order()
 
 
 @app.route("/sync_data")
@@ -259,34 +254,23 @@ def dashboard():
 def enhanced_dashboard():
     """Enhanced system dashboard with advanced features"""
     try:
-        # Get comprehensive stats for enhanced dashboard
         veeqo_warehouses = veeqo_api.get_warehouses()
         easyship_addresses = easyship_api.get_addresses()
 
-        # Enhanced stats with more detailed information
         stats = {
-        return render_template(ENHANCED_DASHBOARD_TEMPLATE, stats=stats)
+            "veeqo_warehouses": len(veeqo_warehouses),
             "easyship_addresses": len(easyship_addresses),
-            "total_locations": (
-                len(veeqo_warehouses)
-                + len(easyship_addresses)
-            ),
-            "routing_rules": (
-                len(routing_system.carrier_platform_mapping)
-            ),
-            # Retrieve today's order stats dynamically
-            # from your order database/service
-            # Example: Replace the following lines
-            # with actual queries to your database
-        return render_template(ENHANCED_DASHBOARD_TEMPLATE, stats=default_stats)
-            "revenue_today": "0",  # Placeholder for today's revenue
-            "avg_processing_time": "0",  # Placeholder for processing time
+            "total_locations": len(veeqo_warehouses) + len(easyship_addresses),
+            "routing_rules": len(routing_system.carrier_platform_mapping),
+            # Placeholders for future enhancements
+            "orders_today": 0,
+            "revenue_today": "0",
+            "avg_processing_time": "0",
         }
-        
+
         return render_template("enhanced_dashboard.html", stats=stats)
     except (KeyError, ValueError, RuntimeError) as e:
         flash(f"Enhanced dashboard error: {str(e)}", "error")
-        # Return with default stats if there's an error
         default_stats = {
             "veeqo_warehouses": 0,
             "easyship_addresses": 0,
@@ -300,12 +284,12 @@ def enhanced_dashboard():
     except Exception as e:
         flash(f"Enhanced dashboard error: {str(e)}", "error")
         default_stats = {
-        return render_template(
-            FEDEX_ORDERS_TEMPLATE, customers=customers, summary=summary
-        )
+            "veeqo_warehouses": 0,
+            "easyship_addresses": 0,
+            "total_locations": 0,
             "routing_rules": 0,
             "orders_today": 0,
-        return render_template(FEDEX_ORDERS_TEMPLATE, customers=[], summary={})
+            "revenue_today": "0",
             "avg_processing_time": "0",
         }
         return render_template("enhanced_dashboard.html", stats=default_stats)
@@ -364,14 +348,14 @@ def create_fedex_order_route(customer_name):
         if result:
             flash(f"FedEx order created for {customer_name}!", "success")
             return jsonify({"status": "success", "result": result})
-        return render_template(
-            VEEQO_ORDERS_TEMPLATE, customers=customers, summary=summary
-        )
-                500,
-            )
-        return render_template(VEEQO_ORDERS_TEMPLATE, customers=[], summary={})
+
+        flash(f"Failed to create FedEx order for {customer_name}", "error")
+        return jsonify({"status": "error", "message": "Failed to create order"}), 500
+    except (KeyError, ValueError, RuntimeError) as e:
+        flash(f"FedEx order error: {str(e)}", "error")
         return jsonify({"status": "error", "message": str(e)}), 500
     except Exception as e:
+        flash(f"FedEx order error: {str(e)}", "error")
         return jsonify({"status": "error", "message": str(e)}), 500
 
 
@@ -455,24 +439,21 @@ def api_veeqo_purchase_orders():
                 "purchase_orders": purchase_orders,
                 "count": len(purchase_orders),
             }
-        return render_template(
-            PRODUCT_SYNC_DASHBOARD_TEMPLATE,
-            sync_stats=sync_stats,
-            inventory_alerts=inventory_alerts,
-            performance=performance,
         )
+    except (KeyError, ValueError, RuntimeError) as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+
+@app.route("/product_sync_dashboard")
 def product_sync_dashboard():
     """Advanced Product Sync Dashboard"""
-        return render_template(
-            PRODUCT_SYNC_DASHBOARD_TEMPLATE,
-            sync_stats={},
-            inventory_alerts=[],
-            performance={},
-        )
-
-        # Get performance data
+    try:
+        sync_stats = product_sync.get_sync_stats()
+        inventory_alerts = product_sync.get_inventory_alerts()
         performance = product_sync.get_product_performance()
-        
+
         return render_template(
             "product_sync_dashboard.html",
             sync_stats=sync_stats,
